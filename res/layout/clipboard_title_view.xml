@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    
+    <LinearLayout
+        android:id="@+id/op_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    
+	    <ImageView
+	        android:id="@+id/operations_file_image"
+	        android:layout_width="26dp"
+	        android:layout_height="26dp"
+	        android:layout_marginTop="3dp"
+	        android:layout_marginLeft="3dp"
+	        android:src="@drawable/operations" />
+	
+	    <TextView
+	        android:id="@+id/operations_file_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.17"
+	        android:layout_marginTop="3dp"
+	        android:text=" Operations"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	</LinearLayout>
+	
+
+	<View
+	    android:id="@+id/separator"
+	    android:layout_width="fill_parent"
+	    android:layout_height="2dp"
+	    android:background="#5CB3FF" />
+	
+    <include
+        android:id="@+id/ops_include"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/clipboard_dialog_view" />
+    
+</LinearLayout>

@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <Button
+        android:id="@+id/button1"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="58dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="showHistory"
+        android:text="History"
+        android:textSize="10sp" />
+
+    <!-- ex width: 198 -->
+    <TextView
+        android:id="@+id/shown_path"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/button1"
+        android:layout_toRightOf="@+id/actions"
+        android:drawable="@drawable/gradient_bg"
+        android:gravity="center_vertical"
+        
+        android:singleLine="true" 
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit ="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true" 
+        android:scrollHorizontally="true"
+        
+        android:text="/etc" />
+
+    <Button
+        android:id="@+id/actions"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="58dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:onClick="showHideActionsButton"
+        android:text="&#9660;Actions"
+        android:textSize="8sp" />
+    
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_below="@+id/button1"
+	    android:background="@android:color/darker_gray" />
+
+    <include
+        android:id="@+id/include2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actions"
+        layout="@layout/base_actions" />
+    
+
+
+</RelativeLayout>

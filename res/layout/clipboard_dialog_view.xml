@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    
+    
+    <LinearLayout
+        android:id="@+id/paste_operation"
+        android:layout_width="match_parent"
+        android:layout_height="33dp" >
+
+        <ImageView
+            android:id="@+id/paste_image"
+            android:src="@drawable/op_paste"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center_vertical" />
+
+        <Button
+            android:id="@+id/button1"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="pasteFile"
+            android:text="Paste" />
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:id="@+id/paste_all_operation"
+        android:layout_width="match_parent"
+        android:layout_height="33dp" >
+
+        <ImageView
+            android:id="@+id/paste_all_image"
+            android:src="@drawable/op_paste_all"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center_vertical" />
+
+        <Button
+            android:id="@+id/button2"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Paste all" />
+
+    </LinearLayout>
+    
+	<View
+	    android:id="@+id/operation_seperator"
+	    android:layout_width="fill_parent"
+	    android:layout_height="2dp"
+	    android:layout_alignParentTop="true"
+	    android:background="@android:color/darker_gray" />
+	
+    <LinearLayout
+        android:id="@+id/clipboard"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp" >
+
+        <ImageView
+            android:id="@+id/clipboard_image"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/op_clipboard" />
+
+        <TextView
+            android:id="@+id/clipboard_text"
+            android:layout_width="191dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.39"
+            android:text=" Clipboard" />
+
+        <Button
+            android:id="@+id/clear_clipboard"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:onClick="clearClipboard"
+            android:text="Clear" />
+    </LinearLayout>
+    
+    <!-- include contentView (used by main_view.xml and history) -->
+    <!-- <include
+        android:id="@+id/include_list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/content_view" />  -->
+
+</LinearLayout>

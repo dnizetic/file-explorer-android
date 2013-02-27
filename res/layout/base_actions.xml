@@ -1,0 +1,174 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+    
+	<View
+	    android:id="@+id/seperator1"
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignRight="@+id/horizontalScrollView1"
+	    android:background="@android:color/darker_gray" />
+	
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:scrollbars="none"
+        android:layout_below="@+id/seperator1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+			<Button
+			    android:id="@+id/select_button"
+			    style="?android:attr/buttonStyleSmall"
+			    android:layout_width="60dp"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/button_effect"
+			    android:drawableTop="@drawable/select"
+			    android:onClick="activateSelect"
+			    android:text="Select" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/button2"
+                android:background="@android:color/darker_gray" />
+            
+
+            <Button
+                android:id="@+id/favoritesButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_effect"
+                android:drawableTop="@drawable/favorites"
+                android:onClick="showFavorites"
+                android:text="Favorites" />
+            
+			<View
+			    android:layout_width="1dp"
+			    android:layout_height="match_parent"
+			    android:layout_alignLeft="@+id/favoritesButton"
+			    android:background="@android:color/darker_gray" />
+
+            <Button
+                android:id="@+id/button3"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_effect"
+                android:drawableTop="@drawable/search"
+                android:text="Search" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/favoritesButton"
+                android:background="@android:color/darker_gray" />
+
+            <Button
+                android:id="@+id/button4"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/up_icon"
+                android:background="@drawable/button_effect"
+                android:text="Up" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/favoritesButton"
+                android:background="@android:color/darker_gray" />
+            
+            <Button
+                android:id="@+id/button5"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/next"
+                android:background="@drawable/button_effect"
+                android:text="Next" />  
+				
+            
+            	<!-- android:background="@android:color/transparent" -->
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/favoritesButton"
+                android:background="@android:color/darker_gray" />
+            
+            
+           <Button
+                android:id="@+id/button6"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_effect"
+                android:drawableTop="@drawable/icons"
+                android:text="Icons" />
+           
+           
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/favoritesButton"
+                android:background="@android:color/darker_gray" />
+            
+            
+           <Button
+                android:id="@+id/button7"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_effect"
+                android:drawableTop="@drawable/sort_icon"
+                android:text="Sort" />
+				
+            
+            	<!-- android:background="@android:color/transparent" -->
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/favoritesButton"
+                android:background="@android:color/darker_gray" />
+            
+            
+           <Button
+                android:id="@+id/button8"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_effect"
+                android:drawableTop="@drawable/connect"
+                android:text="Connect" />
+				
+            
+            	<!-- android:background="@android:color/transparent" -->
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/favoritesButton"
+                android:background="@android:color/darker_gray" />
+            	
+        </LinearLayout>
+    </HorizontalScrollView>
+    
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_alignRight="@+id/horizontalScrollView1"
+	    android:layout_below="@+id/horizontalScrollView1"
+	    android:background="@android:color/darker_gray" />
+
+</RelativeLayout>
