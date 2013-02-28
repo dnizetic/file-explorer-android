@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fileexplorermanager.R;
+import com.landa.adapter.FileListAdapter;
 import com.landa.datatypes.ClipboardFile;
 import com.landa.datatypes.SelectedFile;
 import com.landa.dialog.ClipboardDialogFragment;
@@ -256,6 +257,7 @@ public class OperationsHandler {
 	//rename
 	public void rename(File f, String new_name) 
 	{
+		//rename: what if parentFile() is "/"?
 		if(!f.renameTo(new File(f.getParentFile().getAbsolutePath().concat("/".concat(new_name))))) {
 			displayOperationMessage("Rename failed");
 			return;
@@ -348,11 +350,16 @@ public class OperationsHandler {
 			deselectFile(vw);
 		} else {
 			selected_files.add(new SelectedFile(f, (TextView) vw.findViewById(R.id.file_name)));
-			highlightFileName(vw);
+			//highlightFileName(vw);
+			
+			//ListView lv = (ListView) ac.findViewById(android.R.id.list);
+			//FileListAdapter ad = (FileListAdapter) lv.getAdapter();
+			//ad.getView(position, convertView, parent)
+			//ad.notifyDataSetChanged();
+			//ad.
 		}
 	}
-	
-	
+
 	private void deselectFile(View vw)
 	{
 		TextView fileName = (TextView) vw.findViewById(R.id.file_name);
@@ -481,6 +488,8 @@ public class OperationsHandler {
 		//refresh current content
 		BrowseHandler bh = BrowseHandler.getInstance();
 		bh.refreshContent();
+		
+		displayOperationMessage("File hidden");
 	}
 	
 	public void showCreateNewDialog()
@@ -499,6 +508,14 @@ public class OperationsHandler {
 		file_path = file_path.concat(file_name);
 		File new_file = new File(file_path);
 		
+		executeCreateNew(type, new_file);
+
+		BrowseHandler bh = BrowseHandler.getInstance();
+		bh.refreshContent();
+	}
+	
+	public void executeCreateNew(String type, File new_file)
+	{
 		if(!new_file.exists()) {
 			if(type == "Folder") {
 				boolean result = new_file.mkdir();
@@ -518,22 +535,48 @@ public class OperationsHandler {
 		} else {
 			displayOperationMessage("File already exists, please specify another name.");
 		}
-
-		BrowseHandler bh = BrowseHandler.getInstance();
-		bh.refreshContent();
+	}
+	
+	public boolean executeCreateNewWithoutMessages(String type, File new_file)
+	{
+		if(!new_file.exists()) {
+			if(type == "Folder") {
+				boolean result = new_file.mkdir();
+				if(result) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				try {
+					new_file.createNewFile();
+					return true;
+				} catch(Exception e) {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
 	}
 	
 	public void compressFile(File f)
 	{
+		boolean status; 
 		if(f.isDirectory()) {
 			DirectoryZip.setSOURCE_FOLDER(f.getAbsolutePath());
 			DirectoryZip.setOUTPUT_ZIP_FILE(f.getAbsolutePath().concat(".zip"));
-			DirectoryZip.main(null);
+			status = DirectoryZip.main(null);
 
 		} else {
 			FileZip.setSOURCE_FILE(f.getAbsolutePath());
 			FileZip.setOUTPUT_ZIP_FILE(f.getAbsolutePath().concat(".zip"));
-			FileZip.main(null);
+			status = FileZip.main(null);
+		}
+		if(status) {
+			displayOperationMessage("File compressed.");
+		} else {
+			displayOperationMessage("Error while compressing file.");
 		}
 		
 		BrowseHandler bh = BrowseHandler.getInstance();
@@ -546,7 +589,7 @@ public class OperationsHandler {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 			
 			Editor editor = prefs.edit();
-			editor.putString("home_dir", f.getAbsolutePath());
+			editor.putString("home_directory", f.getAbsolutePath());
 			editor.commit();
 			
 			displayOperationMessage("Home altered.");

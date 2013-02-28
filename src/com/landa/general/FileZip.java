@@ -13,7 +13,7 @@ public class FileZip
     private static String SOURCE_FILE = "C:\\testzip";
 
 
-	public static void main( String[] args )
+	public static boolean main( String[] args )
     {
     	byte[] buffer = new byte[1024];
  
@@ -37,9 +37,12 @@ public class FileZip
     		zos.close();
  
     		System.out.println("Done");
+    		return true;
  
-    	}catch(IOException ex){
+    	} catch(IOException ex){
     	   ex.printStackTrace();
+    	   
+    	   return false;
     	}
     }
     

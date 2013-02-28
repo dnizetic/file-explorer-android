@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -30,10 +31,10 @@ public class OperationsDialogFragment extends DialogFragment {
 	public static final String OP_SELECT_INVERSE = "Select inverse";
 	public static final String OP_CREATE_SHORTCUT = "Create shortcut";
 	public static final String OP_FAVORITE = "Favorite";
-	public static final String OP_HIDE = "Hide";
-	public static final String OP_COMPRESS = "Compress";
-	public static final String OP_SET_AS_HOME = "Set as home";
-	public static final String OP_PROPERTIES = "Properties";
+	public static final String OP_HIDE = "Hide"; //8
+	public static final String OP_COMPRESS = "Compress"; //9
+	public static final String OP_SET_AS_HOME = "Set as home"; //10
+	public static final String OP_PROPERTIES = "Properties"; //11
 
 	ArrayList<String> operationsInfo = new ArrayList<String>();
 
@@ -54,10 +55,10 @@ public class OperationsDialogFragment extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		ArrayList<String> operationsList;
-		if (operation_type == "single_file") {
+		if (operation_type.equals("single_file")) {
 			setSingleFileDialogTitle(builder);
 			operationsList = getSingleFileOperationsList();
-		} else if (operation_type == "multiple_files") {
+		} else if (operation_type.equals("multiple_files")) {
 			setDefaultDialogTitle(builder);
 			operationsList = getMultipleFilesOperationsList();
 		} else {
@@ -68,29 +69,33 @@ public class OperationsDialogFragment extends DialogFragment {
 		OperationsAdapter adap = new OperationsAdapter(getActivity(),
 				operationsList);
 
+		
 		// upon operation click, execute operation
 		builder.setAdapter(adap, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-
-				String op_name = getOperationName(((AlertDialog) dialog)
-						.getListView().getChildAt(whichButton));
-				if (operation_type == "single_file") {
-					executeSingleFileOperation(op_name);
+				
+				//String op_name = getOperationName(((AlertDialog) dialog)
+				//		.getListView()
+				//		.getChildAt(whichButton));
+				Log.v("whichButton", Integer.toString(whichButton));
+				//Log.v("operation", op_name);
+				
+				if (operation_type.equals("single_file")) {
+					executeSingleFileOperationTemp(whichButton);
 				} else {
-					executeMultipleFilesOperation(op_name);
-				}
+					executeMultipleFilesOperation(whichButton);
+				} 
 			}
 		});
-
 		return builder.create();
 	}
 
-	private String getOperationName(View lw) {
+	/* private String getOperationName(View lw) {
 		TextView op = (TextView) lw.findViewById(R.id.operation_name);
 		String op_name = op.getText().toString();
 
 		return op_name;
-	}
+	} */
 
 	private void setSingleFileDialogTitle(AlertDialog.Builder builder) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -117,6 +122,7 @@ public class OperationsDialogFragment extends DialogFragment {
 	}
 
 	private ArrayList<String> getSingleFileOperationsList() {
+		//order important
 		operationsInfo.add(OP_CUT);
 		operationsInfo.add(OP_COPY);
 		operationsInfo.add(OP_RENAME);
@@ -132,6 +138,49 @@ public class OperationsDialogFragment extends DialogFragment {
 		return operationsInfo;
 	}
 
+	private void executeSingleFileOperationTemp(int op_id) {
+		
+		switch(op_id + 1) {
+			case 1: //cut
+				opHandler.cut(f);
+				break;
+			case 2: //copy
+				opHandler.copy(f);
+				break;
+			case 3: //rename
+				showRenameDialog();
+				break;
+			case 4: //delete
+				showDeleteConfirmationDialog();
+				break;
+			case 5: //select all
+				opHandler.selectAll();
+				break;
+			case 6: //add shortcut
+				opHandler.addShortcut(f);
+				break;
+			case 7: //add favorite
+				opHandler.addFavorite(f);
+				break;
+			case 8: //hide file
+				opHandler.hideFile(f);
+				break;
+			case 9: //compress file
+				opHandler.compressFile(f);
+				break;
+			case 10: //set dir as home
+				opHandler.setDirectoryAsHome(f);
+				break;
+			case 11: //show file properties
+				opHandler.showFileProperties(f);
+				break;
+		}
+
+		opHandler.setLast_operation(OperationsHandler.OP_SINGLE);
+	}
+	
+	
+
 	private ArrayList<String> getMultipleFilesOperationsList() {
 		operationsInfo.add(OP_CUT);
 		operationsInfo.add(OP_COPY);
@@ -145,87 +194,37 @@ public class OperationsDialogFragment extends DialogFragment {
 
 		return operationsInfo;
 	}
+	
+	private void executeMultipleFilesOperation(int op_id) {
 
-	private ArrayList<String> getDefaultOperationsList() {
-		operationsInfo.add(OP_SELECT_ALL);
-		operationsInfo.add(OP_SET_AS_HOME);
-
-		return operationsInfo;
-	}
-
-	private void executeSingleFileOperation(String op_name) {
-		if (op_name == OP_CUT) {
-
-			opHandler.cut(f);
-
-		} else if (op_name == OP_COPY) {
-
-			opHandler.copy(f);
-
-		} else if (op_name == OP_RENAME) {
-
-			showRenameDialog();
-
-		} else if (op_name == OP_DELETE) {
-
-			showDeleteConfirmationDialog();
-
-		} else if (op_name == OP_SELECT_ALL) {
-			
-			opHandler.selectAll();
-			
-		} else if (op_name == OP_CREATE_SHORTCUT) {
-			
-			opHandler.addShortcut(f);
-			
-		} else if (op_name == OP_FAVORITE) {
-			
-			opHandler.addFavorite(f);
-			
-		} else if (op_name == OP_HIDE) {
-			
-			opHandler.hideFile(f);
-			
-		} else if (op_name == OP_COMPRESS) {
-			
-			opHandler.compressFile(f);
-			
-		} else if (op_name == OP_SET_AS_HOME) {
-			
-			opHandler.setDirectoryAsHome(f);
-			
-		} else if (op_name == OP_PROPERTIES) {
-			
-			opHandler.showFileProperties(f);
-			
+		switch(op_id + 1) {
+			case 1: //cut
+				opHandler.cut(f);
+				break;
+			case 2: //copy
+				opHandler.copy(f);
+				break;
+			case 3: //delete
+				showDeleteConfirmationDialog();
+				break;
+			case 5: //select all
+				opHandler.selectAll();
+				break;
+			case 6: //select inverse
+				break;
+			case 7: //favorite
+				break;
+			case 8: //hide file
+				break;
+			case 9: //compress file
+				break;
+			case 10: //properties
+				break;
 		}
-
-		opHandler.setLast_operation(OperationsHandler.OP_SINGLE);
-	}
-
-	private void executeMultipleFilesOperation(String op_name) {
-
-		if (op_name == OP_CUT) {
-			opHandler.cutSelectedFiles();
-
-		} else if (op_name == OP_COPY) {
-			opHandler.copySelectedFiles();
-
-		} else if (op_name == OP_DELETE) {
-			opHandler.deleteSelectedFiles();
-			opHandler.cancelSelect();
-		} else if (op_name == OP_SELECT_ALL) {
-			opHandler.selectAll();
-		} else if (op_name == OP_SELECT_INVERSE) {
-
-		} else if (op_name == OP_FAVORITE) {
-		} else if (op_name == OP_HIDE) {
-		} else if (op_name == OP_COMPRESS) {
-		} else if (op_name == OP_PROPERTIES) {
-		}
-
+			
 		opHandler.setLast_operation(OperationsHandler.OP_MULTIPLE);
 	}
+
 
 	// delete prompt
 	private void showDeleteConfirmationDialog() {
@@ -288,6 +287,16 @@ public class OperationsDialogFragment extends DialogFragment {
 		et.setText(f.getName());
 
 		builder.show();
+	}
+	
+	
+	
+
+	private ArrayList<String> getDefaultOperationsList() {
+		operationsInfo.add(OP_SELECT_ALL);
+		operationsInfo.add(OP_SET_AS_HOME);
+
+		return operationsInfo;
 	}
 
 }

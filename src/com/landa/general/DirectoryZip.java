@@ -22,18 +22,18 @@ public class DirectoryZip
     	fileList = new ArrayList<String>();
     }
  
-    public static void main( String[] args )
+    public static boolean main( String[] args )
     {
     	DirectoryZip appZip = new DirectoryZip();
     	appZip.generateFileList(new File(SOURCE_FOLDER));
-    	appZip.zipIt(OUTPUT_ZIP_FILE);
+    	return appZip.zipIt(OUTPUT_ZIP_FILE);
     }
  
     /**
      * Zip it
      * @param zipFile output ZIP file location
      */
-    public void zipIt(String zipFile){
+    public boolean zipIt(String zipFile){
  
      byte[] buffer = new byte[1024];
  
@@ -66,8 +66,12 @@ public class DirectoryZip
     	zos.close();
  
     	System.out.println("Done");
+    	
+    	return true;
     }catch(IOException ex){
-       ex.printStackTrace();   
+       ex.printStackTrace();
+       
+       return false;
     }
    }
  

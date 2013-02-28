@@ -5,9 +5,11 @@ import java.io.File;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -52,19 +54,29 @@ public class BrowseHandler {
 		ac.setContentView(R.layout.main_view);
 		
 		current_path = getInitialPath();
-		
 	}
 	
+	private File getHomeDirectory()
+	{
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+		String home_dir = prefs.getString("home_directory", 
+				Environment.getExternalStorageDirectory().toString());
+		
+		return new File(home_dir);
+	}
+	
+	//test: sdcard unmounted
 	private String getInitialPath()
 	{
-		String path;
+		File home_dir = getHomeDirectory();
 		
-		if(isSdCardMounted()) {
-			path = Environment.getExternalStorageDirectory().toString();
-		} else {
-			path = "/";
+		String initial_path = home_dir.getAbsolutePath();
+		
+		if(!isSdCardMounted() && fileIsInsideSdCard(home_dir)) {
+			Toast.makeText(ctx, "SD Card unmounted, switching to '/'", Toast.LENGTH_SHORT).show();
+			initial_path = "/";
 		}
-		return path;
+		return initial_path;
 	}
 	
 	public void openShortcut(File f)
@@ -185,7 +197,8 @@ public class BrowseHandler {
 		String mime = General.getMimeType(f.getAbsolutePath());
 
 		if (BuildConfig.DEBUG) {
-			intnt.setDataAndType(uri, "*/*");
+			//intnt.setDataAndType(uri, "*/*");
+			intnt.setDataAndType(uri, mime);
 		} else {
 			intnt.setDataAndType(uri, mime);
 		}
@@ -317,8 +330,8 @@ public class BrowseHandler {
 	
 	public boolean atHomeOrRootFolder()
 	{
-		if(current_path.compareTo("/mnt/sdcard") != 0
-		&& current_path.compareTo("/") != 0) {
+		if(!current_path.equals(getHomeDirectory().getAbsolutePath())
+		&& !current_path.equals("/")) {
 			return false;
 		}
 		
@@ -338,6 +351,10 @@ public class BrowseHandler {
 		return current_path.contains(Environment.getExternalStorageDirectory().toString());
 	}
 	
+	public static boolean fileIsInsideSdCard(File f)
+	{
+		return f.getAbsolutePath().contains(Environment.getExternalStorageDirectory().toString());
+	}
 	
 	private boolean sdCardUnmountedViewShown = false;
 	public boolean isSdCardUnmountedViewShown() {

@@ -74,8 +74,9 @@
                 android:background="@android:color/darker_gray" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/up_button"
                 style="?android:attr/buttonStyleSmall"
+                android:onClick="upButton"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/up_icon"

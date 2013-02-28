@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -67,18 +68,19 @@ public class GeneralDialogFragment extends DialogFragment {
 		builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 
-				
-				File f = getFileClicked(((AlertDialog) dialog).getListView()
-						.getChildAt(whichButton));
+				//wrong
+				//File f = getFileClicked(((AlertDialog) dialog).getListView()
+				//			.getChildAt(whichButton));
 
+				//correct
+				File f = (File) ((AlertDialog) dialog).getListView()
+							.getAdapter().getItem(whichButton);
+				
+				Log.v("f", f.getAbsolutePath());
+				//Log.v("f2", f2.getAbsolutePath());
 				
 				BrowseHandler bh = BrowseHandler.getInstance();
 
-				// clear back stack if folder - don't want to return (go up, not
-				// back)
-				// why not clear directly here?
-				//if (f.isDirectory())
-				//	bh.clear_back_stack_before_rendering = true;
 				if (f.isDirectory())
 					bh.clearBackStack();
 
@@ -86,22 +88,11 @@ public class GeneralDialogFragment extends DialogFragment {
 					bh.undisplaySdCardUnmountedView(f);
 				else
 					bh.openFile(f);
-
+					
 			}
 		});
 
 		return builder.create();
 	}
-
-	private File getFileClicked(View lw) {
-		TextView fullPath = (TextView) lw.findViewById(R.id.h_full_path);
-		String f_path = fullPath.getText().toString();
-
-		File f = new File(f_path);
-
-		return f;
-	}
-
-
 
 }

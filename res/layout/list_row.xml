@@ -21,6 +21,7 @@
 
         <ImageView
             android:id="@+id/file_image"
+            android:src="@drawable/folder"
             android:background="@android:color/transparent" 
             android:layout_width="26dp"
             android:layout_height="26dp"  />
@@ -37,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Text"
+        android:text="File name"
         android:textColor="@android:color/black"
         android:textSize="10dip" />
     

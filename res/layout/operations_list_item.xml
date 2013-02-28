@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/list_selector"
+    android:padding="5dip" >
+
+    <ImageView
+        android:id="@+id/operation_image"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:src="@drawable/operations" />
+
+    <TextView
+        android:id="@+id/operation_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="3dip"
+        android:text="Copy" />
+
+</LinearLayout>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -80,15 +81,35 @@ public class ContentFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d("TAG", "onViewCreated");
         
+        //this was changed to final: 27.2.
         ListView list = (ListView) view.findViewById(android.R.id.list);
         
 		list.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
+				
 				OperationsHandler oph = OperationsHandler.getInstance();
 				if(oph.isSelectActive()) {
 					oph.selectFile(new File(getFileFullPath(view)), view);
+					
+					Log.v("TAG", "Getting FileListAdapter");
+					FileListAdapter ad = (FileListAdapter) parent.getAdapter();
+					View v = ad.getView(position, view, parent);
+					
+					TextView fileName = (TextView) v.findViewById(R.id.file_name);
+					Log.v("file_name", fileName.getText().toString());
+					fileName.setTextColor(Color.BLUE);
+					
+					/*View v = parent.getChildAt(position);
+					TextView fileName = (TextView) v.findViewById(R.id.file_name);
+					Log.v("file_name", fileName.getText().toString());
+					fileName.setTextColor(Color.BLUE);*/
+					
+					
+					//.setBackgroundColor(Color.GREEN);
+					//ad.notifyDataSetChanged();
+					
 				} else {
 					BrowseHandler bh = BrowseHandler.getInstance();
 					bh.openFile(new File(getFileFullPath(view)));
@@ -155,3 +176,4 @@ public class ContentFragment extends ListFragment {
     
     
 }
+

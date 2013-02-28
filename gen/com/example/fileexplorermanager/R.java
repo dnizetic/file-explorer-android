@@ -67,7 +67,6 @@ public final class R {
         public static final int button1=0x7f080001;
         public static final int button2=0x7f080009;
         public static final int button3=0x7f08000b;
-        public static final int button4=0x7f08000c;
         public static final int button5=0x7f08000d;
         public static final int button6=0x7f08000e;
         public static final int button7=0x7f08000f;
@@ -117,6 +116,7 @@ public final class R {
         public static final int shown_path=0x7f080002;
         public static final int textView1=0x7f080033;
         public static final int thumbnail=0x7f080029;
+        public static final int up_button=0x7f08000c;
     }
     public static final class layout {
         public static final int base=0x7f030000;
@@ -138,9 +138,10 @@ public final class R {
         public static final int list_selector=0x7f030010;
         public static final int main_view=0x7f030011;
         public static final int operations_list=0x7f030012;
-        public static final int operations_title_view=0x7f030013;
-        public static final int sdcardunmounted=0x7f030014;
-        public static final int single_input_view=0x7f030015;
+        public static final int operations_list_item=0x7f030013;
+        public static final int operations_title_view=0x7f030014;
+        public static final int sdcardunmounted=0x7f030015;
+        public static final int single_input_view=0x7f030016;
     }
     public static final class menu {
         public static final int activity_main=0x7f070000;

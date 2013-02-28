@@ -120,7 +120,7 @@ public class HistoryHandler {
 		List<History> histories = mgr.getAllHistories();
 		
 		ArrayList<File> files = new ArrayList<File>();
-		for (int i = 0; i < histories.size(); ++i) {
+		for (int i = histories.size() - 1; i >= 0; --i) {
 			File f = new File(histories.get(i).getFull_path());
 			
 			if(f != null)

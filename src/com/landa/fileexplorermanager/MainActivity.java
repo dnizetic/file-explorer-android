@@ -261,5 +261,14 @@ public class MainActivity extends FragmentActivity  {
 				browseHandler.undisplaySdCardUnmountedView(new File(BrowseHandler.current_path));
 		}
 	}
+	
+	
+	public void upButton(View vw)
+	{
+		if(BrowseHandler.current_path.equals("/")) {
+			onBackPressed();
+		} else
+			browseHandler.goUpOneLevel();
+	}
 
 }

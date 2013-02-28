@@ -2,13 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
     android:key="initial_preference">
     
-    <CheckBoxPreference
-        android:key="pref_sync"
-        android:title="Some title"
-        android:summary="Some summary"
-        android:defaultValue="true" />
- 
-    
 	<com.landa.preference.HiddenFilesDialogPreference
             android:key="resetQuests"
             android:dialogIcon="@drawable/warning"

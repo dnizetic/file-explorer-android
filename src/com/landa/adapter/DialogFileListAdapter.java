@@ -52,8 +52,8 @@ public class DialogFileListAdapter extends BaseAdapter {
 		return data.length;
 	}
 
-	public Object getItem(int position) {
-		return position;
+	public File getItem(int position) {
+		return data[position];
 	}
 
 	public long getItemId(int position) {
