@@ -2,9 +2,9 @@ package com.landa.fragment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -18,17 +18,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.fileexplorermanager.R;
-import com.landa.adapter.FileListAdapter;
+import com.landa.adapter.MainFileListAdapter;
 import com.landa.database.DatabaseManager;
+import com.landa.datatypes.SelectedFile;
 import com.landa.features.BrowseHandler;
 import com.landa.features.HiddenFileHandler;
 import com.landa.features.OperationsHandler;
+import com.landa.general.General;
 import com.landa.model.HiddenFile;
 
 
 public class ContentFragment extends ListFragment {
 	
-    @Override
+	
+	//instead of files, ContentFragment should have MyFile (with additional info about the file)
+	private File[] files;
+	private MainFileListAdapter contentAdapter;
+	
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
     	
@@ -39,18 +47,24 @@ public class ContentFragment extends ListFragment {
 		View view = inflater.inflate(R.layout.content_view, container, false);
 		ListView list = (ListView) view.findViewById(android.R.id.list);
 		
-		File[] files = f.listFiles();
-		
-		//filter out hidden files
-		if(HiddenFileHandler.fileContainsHiddenFiles(f)) {
-			//n^2 here: remove hidden files from the list
-			files = filterHiddenFiles(files);
-		}
-		
+		files = f.listFiles();
+
 		if (files != null && files.length > 0) {
 			
-			FileListAdapter adapter = new FileListAdapter(getActivity(), files);
-			list.setAdapter(adapter);
+			//sort alphabetically
+			Arrays.sort(files, 0, files.length, General.fileSorter);
+			
+			//filter out hidden files
+			if(HiddenFileHandler.fileContainsHiddenFiles(f)) {
+				//n^2 here: remove hidden files from the list
+				files = filterHiddenFiles(files);
+			}
+			
+			
+			contentAdapter = new MainFileListAdapter(getActivity(), 
+					convertFilesToSelectedFiles());	
+		
+			list.setAdapter(contentAdapter);
 			hideEmptyFolderMessage();
 			
 		} else { 
@@ -76,13 +90,11 @@ public class ContentFragment extends ListFragment {
     	emptyFolder.setVisibility(View.VISIBLE);
     }
     
-    
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d("TAG", "onViewCreated");
         
-        //this was changed to final: 27.2.
-        ListView list = (ListView) view.findViewById(android.R.id.list);
+        final ListView list = (ListView) view.findViewById(android.R.id.list);
         
 		list.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -91,24 +103,9 @@ public class ContentFragment extends ListFragment {
 				
 				OperationsHandler oph = OperationsHandler.getInstance();
 				if(oph.isSelectActive()) {
-					oph.selectFile(new File(getFileFullPath(view)), view);
+					oph.selectFile(new File(getFileFullPath(view)));
 					
-					Log.v("TAG", "Getting FileListAdapter");
-					FileListAdapter ad = (FileListAdapter) parent.getAdapter();
-					View v = ad.getView(position, view, parent);
-					
-					TextView fileName = (TextView) v.findViewById(R.id.file_name);
-					Log.v("file_name", fileName.getText().toString());
-					fileName.setTextColor(Color.BLUE);
-					
-					/*View v = parent.getChildAt(position);
-					TextView fileName = (TextView) v.findViewById(R.id.file_name);
-					Log.v("file_name", fileName.getText().toString());
-					fileName.setTextColor(Color.BLUE);*/
-					
-					
-					//.setBackgroundColor(Color.GREEN);
-					//ad.notifyDataSetChanged();
+					contentAdapter.refillAdapterData();
 					
 				} else {
 					BrowseHandler bh = BrowseHandler.getInstance();
@@ -128,6 +125,7 @@ public class ContentFragment extends ListFragment {
 	    });
         
     }
+
     
     private String getFileFullPath(View view)
     {
@@ -174,6 +172,22 @@ public class ContentFragment extends ListFragment {
     	return filtered_files.toArray(new File[filtered_files.size()]);
     }
     
+    
+    private SelectedFile[] convertFilesToSelectedFiles()
+    {
+    	SelectedFile[] data = new SelectedFile[files.length];
+    	
+    	for(int i = 0; i < files.length; ++i) {
+    		SelectedFile f = new SelectedFile();
+    		
+    		f.setFile(files[i]);
+    		f.setSelected(false);
+    		
+    		data[i] = f;
+    	}
+    	
+    	return data;
+    }
     
 }
 

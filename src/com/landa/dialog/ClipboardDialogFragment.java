@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.example.fileexplorermanager.R;
-import com.landa.adapter.FileListAdapter;
+import com.landa.adapter.ClipboardFileListAdapter;
 import com.landa.features.OperationsHandler;
 
 //used by OperationsHandler
@@ -33,7 +33,7 @@ public class ClipboardDialogFragment extends DialogFragment {
         		Integer.toString(OperationsHandler.getClipboard_files().size()));
         
         
-        FileListAdapter adapter = new FileListAdapter(getActivity(), 
+        ClipboardFileListAdapter adapter = new ClipboardFileListAdapter(getActivity(), 
         		OperationsHandler.getFilesFromClipboard()
         			.toArray(new File[OperationsHandler.getClipboard_files().size()]));
         

@@ -57,6 +57,9 @@ public class General {
 	public static void copyDirectory(File sourceLocation, File targetLocation)
 			throws IOException {
 
+		if(targetLocation.getAbsolutePath().contains(sourceLocation.getAbsolutePath()))
+			throw new IOException("Invalid path (cannot paste a folder into itself)");
+		
 		if (sourceLocation.isDirectory()) {
 			if (!targetLocation.exists() && !targetLocation.mkdirs()) {
 				throw new IOException("Cannot create directory "

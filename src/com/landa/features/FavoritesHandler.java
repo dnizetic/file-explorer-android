@@ -96,5 +96,19 @@ public class FavoritesHandler {
 		return files.toArray(new File[files.size()]);
 	}
 	
+	public static void deleteFavorite(File f) {
+		
+		Dao<Favorite, Integer> dao = helper.getFavoritesDao();
+		
+		List<Favorite> lst = new ArrayList<Favorite>();
+		try {
+			lst = dao.queryForEq("full_path", f.getAbsolutePath());
+			for (Favorite h : lst) {
+				dao.delete(h);
+			}
+		} catch(SQLException e) {
+		}
+	}
+	
 
 }

@@ -2,11 +2,9 @@ package com.landa.fileexplorermanager;
 
 import java.io.File;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
@@ -16,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.fileexplorermanager.R;
 import com.landa.database.DatabaseManager;
-import com.landa.dialog.GeneralDialogFragment;
+import com.landa.dialog.HistoryFavoritesDialogFragment;
 import com.landa.features.BrowseHandler;
 import com.landa.features.FavoritesHandler;
 import com.landa.features.HiddenFileHandler;
@@ -70,13 +68,14 @@ public class MainActivity extends FragmentActivity  {
         	return true;
         return false;
     }
-    
+    //..
     private boolean doubleBackToExitPressedOnce = false;
     @Override
 	public void onBackPressed() {
 	
     	if(oph.isSelectActive()) {
     		oph.cancelSelect();
+    		Toast.makeText(this, "Select canceled", Toast.LENGTH_SHORT).show();
     		return;
     	}
     	
@@ -114,8 +113,6 @@ public class MainActivity extends FragmentActivity  {
     
 
     //on rotate: clear fragments?
-    
-    
 	private void showBackAgainMessage()
 	{
 		this.doubleBackToExitPressedOnce = true;
@@ -133,7 +130,7 @@ public class MainActivity extends FragmentActivity  {
  
 
     //history button and clear history button
-    GeneralDialogFragment history_dialog = new GeneralDialogFragment();
+    HistoryFavoritesDialogFragment history_dialog = new HistoryFavoritesDialogFragment();
     public void showHistory(View view) {
     	
     	Bundle bdl = new Bundle(1);
@@ -152,7 +149,7 @@ public class MainActivity extends FragmentActivity  {
     
     
     //"Favorites" button
-    GeneralDialogFragment favorite_dialog = new GeneralDialogFragment();
+    HistoryFavoritesDialogFragment favorite_dialog = new HistoryFavoritesDialogFragment();
     public void showFavorites(View view) {
     	Bundle bdl = new Bundle(1);
     	bdl.putString("dialog_type", "favorites");

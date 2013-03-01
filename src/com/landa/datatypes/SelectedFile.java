@@ -2,12 +2,10 @@ package com.landa.datatypes;
 
 import java.io.File;
 
-import android.widget.TextView;
-
 public class SelectedFile {
 	
 
-	File file;
+	private File file;
 	
 	public File getFile() {
 		return file;
@@ -17,17 +15,13 @@ public class SelectedFile {
 	}
 	
 	
-	TextView tv;
-	public TextView getTv() {
-		return tv;
+	private boolean selected;
+
+	public boolean isSelected() {
+		return selected;
 	}
-	public void setTv(TextView tv) {
-		this.tv = tv;
-	}
-	
-	public SelectedFile(File f, TextView tv) {
-		this.file = f;
-		this.tv = tv;
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
 }

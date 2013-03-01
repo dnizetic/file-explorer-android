@@ -16,11 +16,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fileexplorermanager.BuildConfig;
 import com.example.fileexplorermanager.R;
+import com.landa.adapter.MainFileListAdapter;
 import com.landa.fragment.ContentFragment;
 import com.landa.fragment.SdCardEmptyFragment;
 import com.landa.general.General;
@@ -158,8 +160,10 @@ public class BrowseHandler {
 		
 	}
 	
+	
 	private ContentFragment createContentFragmentWithArguments(File f)
 	{
+		
 		ContentFragment cf = new ContentFragment();
 		
 		Bundle bdl = new Bundle(1);
@@ -167,6 +171,18 @@ public class BrowseHandler {
 		cf.setArguments(bdl);
 		
 		return cf;
+	}
+	
+	public void markSelectedFiles()
+	{
+		ListView lv = (ListView) ac.findViewById(android.R.id.list);
+		
+		//adapters for "Empty folder" views?
+		MainFileListAdapter adapter = (MainFileListAdapter) lv.getAdapter();
+		
+		if(adapter != null)
+			adapter.refillAdapterData();
+		
 	}
 	
 	public void refreshContent()
@@ -322,7 +338,7 @@ public class BrowseHandler {
 		File parent = new File(new File(current_path).getParent());
 		
 		clearBackStack();
-		populateContent(parent);
+		openFile(parent);
 		
 		Log.v("populateParentFolder()", "here");
 		

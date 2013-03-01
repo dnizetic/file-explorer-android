@@ -3,7 +3,6 @@ package com.landa.features;
 import java.io.File;
 import java.util.ArrayList;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,15 +15,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fileexplorermanager.R;
-import com.landa.adapter.FileListAdapter;
+import com.landa.adapter.MainFileListAdapter;
 import com.landa.datatypes.ClipboardFile;
 import com.landa.datatypes.SelectedFile;
 import com.landa.dialog.ClipboardDialogFragment;
 import com.landa.dialog.CreateNewDialogFragment;
+import com.landa.dialog.FilePropertiesDialogFragment;
 import com.landa.dialog.OperationsDialogFragment;
 import com.landa.fileexplorermanager.MainActivity;
 import com.landa.general.DirectoryZip;
@@ -85,6 +84,7 @@ public class OperationsHandler {
 		
     	Bundle bdl = new Bundle(1);
     	bdl.putString("operation_type", "default");
+    	bdl.putString("file_absolute_path", BrowseHandler.current_path);
     	opDialog.setArguments(bdl);
 		
     	opDialog.show(ac.getSupportFragmentManager(), null);
@@ -111,6 +111,7 @@ public class OperationsHandler {
 	ClipboardDialogFragment cdf;
 	public void openClipboardDialog()
 	{
+		
 		cdf = new ClipboardDialogFragment();
 		cdf.show(ac.getSupportFragmentManager(), null);
 	}
@@ -171,6 +172,7 @@ public class OperationsHandler {
 		this.last_operation = last_operation;
 	}
 	
+	//ClipboardFile arg: used to differentiate cut from copy
 	public void paste(ClipboardFile source) 
 	{
 
@@ -212,7 +214,7 @@ public class OperationsHandler {
 		
 		//use the delete() method
 		if(source.getStatus() == ClipboardFile.STATUS_CUT)
-			delete(source.getFile());
+			delete(source.getFile(), false);
 
 		if(clipboard_files.size() == 0) {
 			hideOperationsPickButton();
@@ -258,6 +260,7 @@ public class OperationsHandler {
 	public void rename(File f, String new_name) 
 	{
 		//rename: what if parentFile() is "/"?
+		//parent can't be "/", because we don't have permissions to create files/folders at "/"
 		if(!f.renameTo(new File(f.getParentFile().getAbsolutePath().concat("/".concat(new_name))))) {
 			displayOperationMessage("Rename failed");
 			return;
@@ -266,16 +269,19 @@ public class OperationsHandler {
 	}
 
 	
-	//put it outside due to recursive delete
+	//you don't output errors in delete().
+	//because e.g. deleteAll might use it: it'll spam then
 	boolean deleteErrors;
-	public void delete(File f)
+	public void delete(File f, boolean show_messages)
 	{
 		deleteRecursive(f);
 		
 		if(deleteErrors) {
-			displayOperationMessage("Errors while deleting.");
+			if(show_messages)
+				displayOperationMessage("Errors while deleting.");
 		} else {
-			displayOperationMessage("Delete success.");
+			if(show_messages)
+				displayOperationMessage("Delete success.");
 		}
 	}
 	
@@ -299,13 +305,24 @@ public class OperationsHandler {
 		this.selectActive = selectActive;
 	}
 	
-	private ArrayList<SelectedFile> selected_files = new ArrayList<SelectedFile>();
+	private ArrayList<File> selected_files = new ArrayList<File>();
+	public ArrayList<File> getSelected_files() {
+		return selected_files;
+	}
+	public void setSelected_files(ArrayList<File> selected_files) {
+		this.selected_files = selected_files;
+	}
 	public void beginSelect()
 	{
 		//set background
 		if(!isSelectActive()) {
 			setSelectButtonBackground();
 			setSelectActive(true);
+			
+			//turn on multi-select operations
+			//MS operations:
+			//- copy, cut, delete, hide, cancel
+			
 			
 			displayOperationMessage("Select ready.");
 		}
@@ -316,9 +333,11 @@ public class OperationsHandler {
 		unsetSelectButtonBackground();
 		setSelectActive(false);
 		
-		unhighlightAllSelectedFiles();
+		selected_files.clear();
 		
-		displayOperationMessage("Select canceled.");
+		BrowseHandler bh = BrowseHandler.getInstance();
+		bh.markSelectedFiles();
+		
 	}
 	
 	private void setSelectButtonBackground()
@@ -336,67 +355,45 @@ public class OperationsHandler {
 	private boolean fileAlreadySelected(File f)
 	{
 		for(int i = 0; i < selected_files.size(); ++i)
-			if(f.getAbsolutePath().toString()
-					.compareTo(selected_files.get(i).getFile().getAbsolutePath().toString()) == 0)
+			if(f.getAbsolutePath()
+					.equals(selected_files.get(i).getAbsolutePath()))
 				return true;
 		return false;
 	}
 	
 	
 	
-	public void selectFile(File f, View vw)
+	public void selectFile(File f)
 	{
 		if(fileAlreadySelected(f)) {
-			deselectFile(vw);
+			deselectFile(f);
+			//selected_files.remove(f);
 		} else {
-			selected_files.add(new SelectedFile(f, (TextView) vw.findViewById(R.id.file_name)));
-			//highlightFileName(vw);
-			
-			//ListView lv = (ListView) ac.findViewById(android.R.id.list);
-			//FileListAdapter ad = (FileListAdapter) lv.getAdapter();
-			//ad.getView(position, convertView, parent)
-			//ad.notifyDataSetChanged();
-			//ad.
+			selected_files.add(f);
 		}
 	}
 
-	private void deselectFile(View vw)
+	private void deselectFile(File f)
 	{
-		TextView fileName = (TextView) vw.findViewById(R.id.file_name);
-		
-		fileName.setTextColor(Color.BLACK);
-		removeFromSelectedFiles(new File(fileName.getText().toString()));
+		removeFromSelectedFiles(f);
 	}
 	
-	private void highlightFileName(View vw)
-	{
-		TextView fileName = (TextView) vw.findViewById(R.id.file_name);
-		fileName.setTextColor(Color.BLUE);
-	}
-
-
 	private void removeFromSelectedFiles(File f)
 	{
 		for(int i = 0; i < selected_files.size(); ++i) {
-			if(f.getName().toString().compareTo(selected_files.get(i).getFile().getName().toString()) == 0) {
+			if(f.getName().equals(selected_files.get(i).getName())) {
 				selected_files.remove(i);
 				return;
 			}
 		}
 	}
 	
-	private void unhighlightAllSelectedFiles()
-	{
-		for(int i = 0; i < selected_files.size(); ++i)
-			selected_files.get(i).getTv().setTextColor(Color.BLACK);
-		
-		selected_files.clear();
-	}
+
 	
 	public void cutSelectedFiles()
 	{
 		for(int i = 0; i < selected_files.size(); ++i)
-			cut(selected_files.get(i).getFile());
+			cut(selected_files.get(i));
 		
 		cancelSelect();
 	}
@@ -404,7 +401,7 @@ public class OperationsHandler {
 	public void copySelectedFiles()
 	{
 		for(int i = 0; i < selected_files.size(); ++i)
-			copy(selected_files.get(i).getFile());
+			copy(selected_files.get(i));
 		
 		cancelSelect();
 	}
@@ -412,7 +409,7 @@ public class OperationsHandler {
 	public void deleteSelectedFiles()
 	{
 		for(int i = 0; i < selected_files.size(); ++i)
-			delete(selected_files.get(i).getFile());
+			delete(selected_files.get(i), false);
 		
 		cancelSelect();
 		
@@ -426,20 +423,18 @@ public class OperationsHandler {
 		beginSelect();
 		
 		ListView lv = (ListView) ac.findViewById(android.R.id.list);
-		//lv.setCacheColorHint(Color.BLUE);
+		MainFileListAdapter adapter = (MainFileListAdapter) lv.getAdapter();
+		SelectedFile[] files = adapter.getData();
 		
-		for(int i = 0; i < lv.getChildCount(); ++i) {
-			View vw = lv.getChildAt(i);
+		for(int i = 0; i < files.length; ++i) {
+			File f = files[i].getFile();
 			
-			TextView full_path = (TextView) vw.findViewById(R.id.full_path);
-			String f_path = full_path.getText().toString();
-			
-			TextView tv = (TextView) vw.findViewById(R.id.file_name);
-			
-			File f = new File(f_path);
 			if(!fileAlreadySelected(f))
-				selectFile(f, tv);
+				selectFile(f);
 		}
+		
+		BrowseHandler bh = BrowseHandler.getInstance();
+		bh.markSelectedFiles();
 	}
 	
 	public void addShortcut(File f) {
@@ -600,9 +595,13 @@ public class OperationsHandler {
 	
 	public void showFileProperties(File f)
 	{
-		Dialog dialog = new Dialog(ctx, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+		FilePropertiesDialogFragment d = new FilePropertiesDialogFragment();
 		
-		dialog.show();
+		Bundle bdl = new Bundle(1);
+		bdl.putString("file_absolute_path", f.getAbsolutePath());
+		d.setArguments(bdl);
+		
+		d.show(ac.getSupportFragmentManager(), null);
 	}
 	
 }

@@ -38,7 +38,7 @@ public class OperationsDialogFragment extends DialogFragment {
 
 	ArrayList<String> operationsInfo = new ArrayList<String>();
 
-	private OperationsHandler opHandler;
+	OperationsHandler opHandler;
 	private File f;
 	
 	@Override
@@ -82,9 +82,11 @@ public class OperationsDialogFragment extends DialogFragment {
 				
 				if (operation_type.equals("single_file")) {
 					executeSingleFileOperationTemp(whichButton);
-				} else {
+				} else if(operation_type.equals("multiple_files")) {
 					executeMultipleFilesOperation(whichButton);
-				} 
+				} else {
+					executeDefaultFilesOperation(whichButton);
+				}
 			}
 		});
 		return builder.create();
@@ -195,17 +197,19 @@ public class OperationsDialogFragment extends DialogFragment {
 		return operationsInfo;
 	}
 	
+	
 	private void executeMultipleFilesOperation(int op_id) {
 
+		
 		switch(op_id + 1) {
 			case 1: //cut
-				opHandler.cut(f);
+				opHandler.cutSelectedFiles();
 				break;
 			case 2: //copy
-				opHandler.copy(f);
+				opHandler.copySelectedFiles();
 				break;
 			case 3: //delete
-				showDeleteConfirmationDialog();
+				//showDeleteConfirmationDialog();
 				break;
 			case 5: //select all
 				opHandler.selectAll();
@@ -235,7 +239,10 @@ public class OperationsDialogFragment extends DialogFragment {
 				.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								opHandler.delete(f);
+								
+								
+								opHandler.delete(f, true);
+								//show OK/not ok message
 
 								// refresh view
 								BrowseHandler bh = BrowseHandler.getInstance();
@@ -258,6 +265,7 @@ public class OperationsDialogFragment extends DialogFragment {
 
 
 	private void showRenameDialog() {
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setCancelable(true)
 				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -285,6 +293,7 @@ public class OperationsDialogFragment extends DialogFragment {
 
 		EditText et = (EditText) vw.findViewById(R.id.input_1);
 		et.setText(f.getName());
+		et.selectAll();
 
 		builder.show();
 	}
@@ -297,6 +306,19 @@ public class OperationsDialogFragment extends DialogFragment {
 		operationsInfo.add(OP_SET_AS_HOME);
 
 		return operationsInfo;
+	}
+	
+	private void executeDefaultFilesOperation(int op_id) {
+
+		switch(op_id + 1) {
+			case 1: //select all
+				opHandler.selectAll();
+				break;
+			case 2: //set as home
+				opHandler.setDirectoryAsHome(f);
+				break;
+		}
+			
 	}
 
 }
