@@ -1,11 +1,14 @@
 package com.landa.fragment;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,16 +46,24 @@ public class ContentFragment extends ListFragment {
     	
     	final String pth =  getArguments().getString("file_absolute_path");
     	File f = new File(pth);
-    	
+		
 		View view = inflater.inflate(R.layout.content_view, container, false);
 		ListView list = (ListView) view.findViewById(android.R.id.list);
-		
-		files = f.listFiles();
 
+	
+		if(!prefsShowHiddenFiles()) {
+			files = f.listFiles(new FilenameFilter() {
+			    public boolean accept(File directory, String fileName) {
+			    	return !fileName.startsWith(".");
+			    }
+			});
+		} else {
+			files = f.listFiles();
+		}
+		
 		if (files != null && files.length > 0) {
 			
-			//sort alphabetically
-			Arrays.sort(files, 0, files.length, General.fileSorter);
+			files = orderFoldersFirstFilesAfter();
 			
 			//filter out hidden files
 			if(HiddenFileHandler.fileContainsHiddenFiles(f)) {
@@ -76,6 +87,44 @@ public class ContentFragment extends ListFragment {
         return view;
     }
     
+	
+	private File[] orderFoldersFirstFilesAfter()
+	{
+		ArrayList<File> folders_only = new ArrayList<File>();
+		ArrayList<File> files_only = new ArrayList<File>();
+		
+		for(int i = 0; i < files.length; ++i) {
+			
+			if(files[i].isDirectory())
+				folders_only.add(files[i]);
+			else
+				files_only.add(files[i]);
+		}
+		
+		File folders_[] = folders_only.toArray(new File[folders_only.size()]);
+		File files_[] = files_only.toArray(new File[files_only.size()]);
+		
+		Arrays.sort(folders_, 0, folders_.length, General.fileSorter);
+		Arrays.sort(files_, 0, files_.length, General.fileSorter);
+		
+		ArrayList<File> merged = new ArrayList<File>();
+		for(int i = 0; i < folders_.length; ++i)
+			merged.add(folders_[i]);
+		for(int i = 0; i < files_.length; ++i)
+			merged.add(files_[i]);
+		
+		
+		File[] fin = merged.toArray(new File[merged.size()]);
+		
+		return fin;
+	}
+	
+	private boolean prefsShowHiddenFiles()
+	{
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		return prefs.getBoolean("show_hidden_files", false);
+	}
+	
     private void hideEmptyFolderMessage()
     {
     	TextView emptyFolder = (TextView) getActivity().findViewById(R.id.message);

@@ -20,9 +20,9 @@
         android:layout_below="@+id/seperator1">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
 
 			<Button
@@ -31,8 +31,8 @@
 			    android:layout_width="60dp"
 			    android:layout_height="wrap_content"
 			    android:background="@drawable/button_effect"
-			    android:drawableTop="@drawable/select"
-			    android:onClick="activateSelect"
+			    android:drawableTop="@drawable/base_select"
+			    android:onClick="selectButton"
 			    android:text="Select" />
 
             <View
@@ -41,11 +41,124 @@
                 android:layout_alignLeft="@+id/button2"
                 android:background="@android:color/darker_gray" />
             
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/show_select_ops"
+            android:visibility="gone" >
+            
+			<Button
+			    android:id="@+id/copy_button"
+			    style="?android:attr/buttonStyleSmall"
+			    android:layout_width="60dp"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/button_effect"
+			    android:drawableTop="@drawable/op_copy"
+			    android:onClick="copyButton"
+			    android:text="Copy" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/copy_button"
+                android:background="@android:color/darker_gray" />
+            
+			<Button
+			    android:id="@+id/cut_button"
+			    style="?android:attr/buttonStyleSmall"
+			    android:layout_width="60dp"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/button_effect"
+			    android:drawableTop="@drawable/op_cut"
+			    android:onClick="cutButton"
+			    android:text="Cut" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/cut_button"
+                android:background="@android:color/darker_gray" />
+            
+			<Button
+			    android:id="@+id/delete_button"
+			    style="?android:attr/buttonStyleSmall"
+			    android:layout_width="60dp"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/button_effect"
+			    android:drawableTop="@drawable/op_delete"
+			    android:onClick="deleteButton"
+			    android:text="Delete" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/delete_button"
+                android:background="@android:color/darker_gray" />
+            
+			<Button
+			    android:id="@+id/hide_button"
+			    style="?android:attr/buttonStyleSmall"
+			    android:layout_width="60dp"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/button_effect"
+			    android:drawableTop="@drawable/op_hide"
+			    android:onClick="hideButton"
+			    android:text="Hide" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/hide_button"
+                android:background="@android:color/darker_gray" />
+         </LinearLayout> 
+         
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/show_paste_ops"
+            android:visibility="gone" >
+            
+			<Button
+			    android:id="@+id/paste_button"
+			    style="?android:attr/buttonStyleSmall"
+			    android:layout_width="60dp"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/button_effect"
+			    android:drawableTop="@drawable/op_paste"
+			    android:onClick="pasteButton"
+			    android:text="Paste" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/paste_button"
+                android:background="@android:color/darker_gray" /> 
+             
+			<Button
+			    android:id="@+id/cancel_button"
+			    style="?android:attr/buttonStyleSmall"
+			    android:layout_width="60dp"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/button_effect"
+			    android:drawableTop="@drawable/warning"
+			    android:onClick="cancelButton"
+			    android:text="Cancel" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignLeft="@+id/cancel_button"
+                android:background="@android:color/darker_gray" /> 
+            
+            
+         </LinearLayout>
 
             <Button
                 android:id="@+id/favoritesButton"
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="60dp"
+                android:layout_width="63dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_effect"
                 android:drawableTop="@drawable/favorites"
@@ -59,12 +172,13 @@
 			    android:background="@android:color/darker_gray" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/search_button"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_effect"
-                android:drawableTop="@drawable/search"
+                android:drawableTop="@drawable/base_search"
+                android:onClick="searchButton"
                 android:text="Search" />
 
             <View
@@ -79,7 +193,7 @@
                 android:onClick="upButton"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/up_icon"
+                android:drawableTop="@drawable/base_up_icon"
                 android:background="@drawable/button_effect"
                 android:text="Up" />
 
@@ -94,7 +208,7 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/next"
+                android:drawableTop="@drawable/base_next"
                 android:background="@drawable/button_effect"
                 android:text="Next" />  
 				
@@ -114,7 +228,7 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_effect"
-                android:drawableTop="@drawable/icons"
+                android:drawableTop="@drawable/base_icons"
                 android:text="Icons" />
            
            
@@ -131,7 +245,7 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_effect"
-                android:drawableTop="@drawable/sort_icon"
+                android:drawableTop="@drawable/base_sort_icon"
                 android:text="Sort" />
 				
             
@@ -150,7 +264,7 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_effect"
-                android:drawableTop="@drawable/connect"
+                android:drawableTop="@drawable/base_connect"
                 android:text="Connect" />
 				
             

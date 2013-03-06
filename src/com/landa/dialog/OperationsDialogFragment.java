@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fileexplorermanager.R;
 import com.landa.adapter.OperationsAdapter;
+import com.landa.datatypes.PasteFile;
 import com.landa.features.BrowseHandler;
 import com.landa.features.OperationsHandler;
 
@@ -165,7 +167,7 @@ public class OperationsDialogFragment extends DialogFragment {
 				opHandler.addFavorite(f);
 				break;
 			case 8: //hide file
-				opHandler.hideFile(f);
+				opHandler.hide(f);
 				break;
 			case 9: //compress file
 				opHandler.compressFile(f);
@@ -178,7 +180,7 @@ public class OperationsDialogFragment extends DialogFragment {
 				break;
 		}
 
-		opHandler.setLast_operation(OperationsHandler.OP_SINGLE);
+		
 	}
 	
 	
@@ -203,10 +205,10 @@ public class OperationsDialogFragment extends DialogFragment {
 		
 		switch(op_id + 1) {
 			case 1: //cut
-				opHandler.cutSelectedFiles();
+				opHandler.copyCutSelectedFiles(PasteFile.STATUS_CUT);
 				break;
 			case 2: //copy
-				opHandler.copySelectedFiles();
+				opHandler.copyCutSelectedFiles(PasteFile.STATUS_COPY);
 				break;
 			case 3: //delete
 				//showDeleteConfirmationDialog();
@@ -226,7 +228,6 @@ public class OperationsDialogFragment extends DialogFragment {
 				break;
 		}
 			
-		opHandler.setLast_operation(OperationsHandler.OP_MULTIPLE);
 	}
 
 
@@ -241,9 +242,11 @@ public class OperationsDialogFragment extends DialogFragment {
 							public void onClick(DialogInterface dialog, int id) {
 								
 								
-								opHandler.delete(f, true);
-								//show OK/not ok message
-
+								if(!opHandler.delete(f)) {
+									Toast.makeText(getActivity(), 
+											"Error while deleting.", Toast.LENGTH_LONG).show();
+								}
+								
 								// refresh view
 								BrowseHandler bh = BrowseHandler.getInstance();
 								bh.refreshContent();

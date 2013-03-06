@@ -12,5 +12,17 @@
             android:positiveButtonText="Clear all"
             android:negativeButtonText="Cancel"/>
 	
+	
+	<CheckBoxPreference
+	    android:key="show_hidden_files"
+	    android:title="Show hidden files"
+	    android:summary="Show files whose name starts with a '.'"
+	    android:defaultValue="true"/>
+	
+	<CheckBoxPreference
+	    android:key="show_image_thumbnails"
+	    android:title="Show image thumbnails"
+	    android:summary="Show image thumbnails"
+	    android:defaultValue="true"/>
     
 </PreferenceScreen>

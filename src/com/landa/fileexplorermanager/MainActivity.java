@@ -10,11 +10,14 @@ import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.fileexplorermanager.R;
 import com.landa.database.DatabaseManager;
+import com.landa.datatypes.PasteFile;
 import com.landa.dialog.HistoryFavoritesDialogFragment;
+import com.landa.dialog.SearchDialogFragment;
 import com.landa.features.BrowseHandler;
 import com.landa.features.FavoritesHandler;
 import com.landa.features.HiddenFileHandler;
@@ -179,11 +182,9 @@ public class MainActivity extends FragmentActivity  {
 	//button "Paste" inside OperationsDialog
 	public void pasteFile(View view)
 	{		
-		if(oph.getLast_operation() == OperationsHandler.OP_SINGLE) {
-			oph.paste(OperationsHandler.getClipboard_files().get(0));
-		} else {
-			
-		}
+		
+		oph.paste(OperationsHandler.getClipboard_files().get(0));
+	
 	}
 	//button "Clear clipboard" inside OperationsDialog
 	public void clearClipboard(View view)
@@ -193,11 +194,21 @@ public class MainActivity extends FragmentActivity  {
 	}
 	
 	//button "Select" from the base_actions
-	public void activateSelect(View view)
+	public void selectButton(View view)
 	{
+		if(oph.isSelectActive()) {
+			oph.cancelSelect();
+			return;
+		}
+		
 		oph.beginSelect();
+		
+		if(oph.isCopy_cut_multiple_files_active()) {
+			oph.setPasteOperationsVisibility(View.GONE);
+			oph.setCopy_cut_multiple_files_active(false);
+			//discard_files()
+		}
 	}
-	
 	
 	//menu
     @Override
@@ -267,5 +278,78 @@ public class MainActivity extends FragmentActivity  {
 		} else
 			browseHandler.goUpOneLevel();
 	}
-
+	
+	//copy/cut/paste/delete
+	public void copyButton(View vw)
+	{
+		oph.copyCutSelectedFiles(PasteFile.STATUS_COPY);
+		
+		oph.setPasteOperationsVisibility(View.VISIBLE);
+	}
+	
+	public void cutButton(View vw)
+	{
+		oph.copyCutSelectedFiles(PasteFile.STATUS_CUT);
+		
+		oph.setPasteOperationsVisibility(View.VISIBLE);
+	}
+	
+	public void deleteButton(View vw)
+	{
+		oph.deleteSelectedFiles();
+	}
+	
+	public void hideButton(View vw)
+	{
+		oph.hideSelectedFiles();
+	}
+	
+	public void pasteButton(View vw)
+	{
+		boolean success;
+		
+		if(oph.isCopy_cut_multiple_files_active()) {
+			
+			//call paste on all files
+			success = oph.pasteSelectedFiles();
+			
+			oph.setCopy_cut_multiple_files_active(false);
+		} else {
+			
+			success = oph.paste(oph.getCopied_cut_file());
+			
+		}
+		
+		if(success)
+			oph.setPasteOperationsVisibility(View.GONE);
+		else
+			Toast.makeText(this, "Paste didn't finish successfully.", Toast.LENGTH_LONG).show();
+	}
+	
+	public void cancelButton(View vw)
+	{
+		oph.setPasteOperationsVisibility(View.GONE);
+		
+		if(oph.isCopy_cut_multiple_files_active()) {
+			oph.setCopy_cut_multiple_files_active(false);
+		}
+			
+	}
+	
+	public void searchButton(View vw)
+	{
+		SearchDialogFragment search_dialog = new SearchDialogFragment();
+		
+		search_dialog.show(getSupportFragmentManager(), null);
+	}
+	
+	public void showAdvancedSearchButton(View vw)
+	{
+		
+		LinearLayout advanced_search = (LinearLayout) ((View)vw.getParent()).findViewById(R.id.advanced_search);
+		if(advanced_search.getVisibility() == View.GONE)
+			advanced_search.setVisibility(View.VISIBLE);
+		else
+			advanced_search.setVisibility(View.GONE);
+	}
 }

@@ -5,4 +5,29 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
 
+    
+    <string name="search_search_in">Search in</string>
+    
+    <string-array name="file_size_array">
+        <item>Any</item>
+        <item>0 &#8211; 0.5MB</item>
+        <item>0.5 &#8211; 1MB</item>
+        <item>1 &#8211; 10MB</item>
+        <item>10 &#8211; 25MB</item>
+        <item>25 &#8211; 50MB</item>
+        <item>&gt; 50MB</item>
+        
+    </string-array>
+    
+    <string-array name="file_type_array">
+        <item>Any</item>
+        <item>Audio</item>
+        <item>Image</item>
+        <item>Text</item>
+        <item>Video</item>
+        <item>Application</item>
+        
+        
+    </string-array>
+    
 </resources>

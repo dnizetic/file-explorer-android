@@ -14,12 +14,13 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.fileexplorermanager.R;
 import com.landa.adapter.MainFileListAdapter;
-import com.landa.datatypes.ClipboardFile;
+import com.landa.datatypes.PasteFile;
 import com.landa.datatypes.SelectedFile;
 import com.landa.dialog.ClipboardDialogFragment;
 import com.landa.dialog.CreateNewDialogFragment;
@@ -91,9 +92,9 @@ public class OperationsHandler {
 	}
 	
 	//getter/setter
-	private static ArrayList<ClipboardFile> clipboard_files = new ArrayList<ClipboardFile>();
+	private static ArrayList<PasteFile> clipboard_files = new ArrayList<PasteFile>();
 	
-	public static ArrayList<ClipboardFile> getClipboard_files() {
+	public static ArrayList<PasteFile> getClipboard_files() {
 		return clipboard_files;
 	}
 	
@@ -137,58 +138,65 @@ public class OperationsHandler {
 		}
 	}
 	
-	public void cut(File f) 
+	
+	public void addToClipboard(File f, boolean status)
 	{
-		showOperationsPickButton();
-		
 		int index;
 		if((index = existsInClipboard(f)) != -1) {
-			clipboard_files.get(index).setStatus(ClipboardFile.STATUS_CUT);
+			clipboard_files.get(index).setStatus(status);
 		} else { 
-			clipboard_files.add(0, new ClipboardFile(f, ClipboardFile.STATUS_CUT));
+			clipboard_files.add(0, new PasteFile(f, status));
 		}	
 	}
 	
+	
+	private PasteFile copied_cut_file;
+	
+	public PasteFile getCopied_cut_file() {
+		return copied_cut_file;
+	}
+	public void setCopied_cut_file(PasteFile copied_cut_file) {
+		this.copied_cut_file = copied_cut_file;
+	}
+	public void cut(File f) 
+	{
+		setCopied_cut_file(new PasteFile(f, PasteFile.STATUS_CUT));
+		
+		showOperationsPickButton();
+		setPasteOperationsVisibility(View.VISIBLE);
+		
+		addToClipboard(f, PasteFile.STATUS_CUT);
+	}
+	
+
 	public void copy(File f) 
 	{
+		setCopied_cut_file(new PasteFile(f, PasteFile.STATUS_COPY));
+		
 		showOperationsPickButton();
+		setPasteOperationsVisibility(View.VISIBLE);
 		
-		int index;
-		if((index = existsInClipboard(f)) != -1) {
-			clipboard_files.get(index).setStatus(ClipboardFile.STATUS_COPY);
-		} else {
-			clipboard_files.add(0, new ClipboardFile(f, ClipboardFile.STATUS_COPY));
-		}
-		
+		addToClipboard(f, PasteFile.STATUS_COPY);
 	}
 	
-	public static final boolean OP_SINGLE = false;
-	public static final boolean OP_MULTIPLE = true;
-	public boolean last_operation = OP_SINGLE;
-	public boolean getLast_operation() {
-		return last_operation;
-	}
-	public void setLast_operation(boolean last_operation) {
-		this.last_operation = last_operation;
-	}
-	
+
 	//ClipboardFile arg: used to differentiate cut from copy
-	public void paste(ClipboardFile source) 
+	public boolean paste(PasteFile source) 
 	{
-
-		if(source == null) { //shouldn't happen
-			displayOperationMessage("Error: clipboard empty.");
-			return;
+		if(source == null) {
+			return false;
 		}
 
-		File target = new File(BrowseHandler.current_path.concat("/").concat(source.getFile().getName()));
+		File target = new File(BrowseHandler.
+				current_path.concat("/").concat(source.getFile().getName()));
 		
 		Log.v("Source path:", source.getFile().getAbsolutePath().toString());
 		Log.v("Dest path:", target.getAbsolutePath().toString());
 		
-		if(source.getFile().getAbsolutePath().toString().compareTo(target.getAbsolutePath().toString()) == 0) {
+		if(source.getFile().getAbsolutePath()
+				.equals(target.getAbsolutePath())) {
 			displayOperationMessage("Invalid path (same).");
-			return;
+			return false;
 		}
 
 		
@@ -198,14 +206,14 @@ public class OperationsHandler {
 				General.copyDirectory(source.getFile(), target);
 			} catch(Exception e) {
 				displayOperationMessage("Error: copy failed: ".concat(e.getMessage()));
-				return;
+				return false;
 			}
 		} else { 
 			try {
 				General.copyFile(source.getFile(), target);
 			} catch(Exception e) {
 				displayOperationMessage("Error: copy failed: ".concat(e.getMessage()));
-				return;
+				return false;
 			}
 		}
 		
@@ -213,24 +221,22 @@ public class OperationsHandler {
 
 		
 		//use the delete() method
-		if(source.getStatus() == ClipboardFile.STATUS_CUT)
-			delete(source.getFile(), false);
+		if(source.getStatus() == PasteFile.STATUS_CUT)
+			delete(source.getFile());
 
 		if(clipboard_files.size() == 0) {
 			hideOperationsPickButton();
 		}
 		
 		displayOperationMessage("Paste successfull.");
-		cdf.dismiss();
+		//cdf.dismiss();
 		
 		BrowseHandler bh = BrowseHandler.getInstance();
 		bh.refreshContent();
+		
+		return true;
 	}
 	
-	public void pasteAll()
-	{
-		
-	}
 	
 	public void clearClipboard()
 	{
@@ -272,17 +278,11 @@ public class OperationsHandler {
 	//you don't output errors in delete().
 	//because e.g. deleteAll might use it: it'll spam then
 	boolean deleteErrors;
-	public void delete(File f, boolean show_messages)
+	public boolean delete(File f)
 	{
 		deleteRecursive(f);
 		
-		if(deleteErrors) {
-			if(show_messages)
-				displayOperationMessage("Errors while deleting.");
-		} else {
-			if(show_messages)
-				displayOperationMessage("Delete success.");
-		}
+		return deleteErrors ? false : true;
 	}
 	
 	private void deleteRecursive(File fileOrDirectory) {
@@ -322,11 +322,24 @@ public class OperationsHandler {
 			//turn on multi-select operations
 			//MS operations:
 			//- copy, cut, delete, hide, cancel
-			
+			setSelectOperationsVisibility(View.VISIBLE);
 			
 			displayOperationMessage("Select ready.");
 		}
 	}
+	
+	public void setSelectOperationsVisibility(int visibility)
+	{
+		LinearLayout select_actions = (LinearLayout) ac.findViewById(R.id.show_select_ops);
+		select_actions.setVisibility(visibility);
+	}
+	
+	public void setPasteOperationsVisibility(int visibility)
+	{
+		LinearLayout paste_actions = (LinearLayout) ac.findViewById(R.id.show_paste_ops);
+		paste_actions.setVisibility(visibility);
+	}
+
 	
 	public void cancelSelect() 
 	{
@@ -338,6 +351,7 @@ public class OperationsHandler {
 		BrowseHandler bh = BrowseHandler.getInstance();
 		bh.markSelectedFiles();
 		
+		setSelectOperationsVisibility(View.GONE);
 	}
 	
 	private void setSelectButtonBackground()
@@ -388,28 +402,84 @@ public class OperationsHandler {
 		}
 	}
 	
+	
+	//sp: File, Copy/Cut
+	private ArrayList<PasteFile> multiple_op_files = new ArrayList<PasteFile>();
+	
+	
+	//operation: cut or copy
+	public void copyCutSelectedFiles(boolean operation)
+	{
+		if(selected_files.size() == 0) {
+			Toast.makeText(ctx, 
+					"Select files first.", Toast.LENGTH_LONG).show();
+			return;
+		}
 
-	
-	public void cutSelectedFiles()
-	{
-		for(int i = 0; i < selected_files.size(); ++i)
-			cut(selected_files.get(i));
 		
+		multiple_op_files.clear();
+		
+		for(int i = 0; i < selected_files.size(); ++i) {
+			addToClipboard(selected_files.get(i), operation);
+			
+			multiple_op_files.add(
+					new PasteFile(selected_files.get(i), operation));
+		}
+			
 		cancelSelect();
+		
+		setCopy_cut_multiple_files_active(true);
 	}
 	
-	public void copySelectedFiles()
+	
+	public boolean pasteSelectedFiles()
 	{
-		for(int i = 0; i < selected_files.size(); ++i)
-			copy(selected_files.get(i));
+		boolean success = true;
 		
-		cancelSelect();
+		for(int i = 0; i < multiple_op_files.size(); ++i) {
+			if(!paste(multiple_op_files.get(i)))
+				success = false;
+		}
+		
+		return success;
 	}
+	
+	
 	
 	public void deleteSelectedFiles()
 	{
+		
+		if(selected_files.size() == 0) {
+			Toast.makeText(ctx, 
+					"Select files first.", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		boolean errors = false;
 		for(int i = 0; i < selected_files.size(); ++i)
-			delete(selected_files.get(i), false);
+			if(!delete(selected_files.get(i)))
+				errors = true;
+		
+		cancelSelect();
+		
+		if(errors)
+			Toast.makeText(ctx, 
+					"Error while deleting.", Toast.LENGTH_LONG).show();
+		
+		BrowseHandler bh = BrowseHandler.getInstance();
+		bh.refreshContent();
+	}
+	
+	public void hideSelectedFiles()
+	{
+		if(selected_files.size() == 0) {
+			Toast.makeText(ctx, 
+					"Select files first.", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		for(int i = 0; i < selected_files.size(); ++i)
+			hide(selected_files.get(i));
 		
 		cancelSelect();
 		
@@ -432,6 +502,8 @@ public class OperationsHandler {
 			if(!fileAlreadySelected(f))
 				selectFile(f);
 		}
+		
+		
 		
 		BrowseHandler bh = BrowseHandler.getInstance();
 		bh.markSelectedFiles();
@@ -459,6 +531,8 @@ public class OperationsHandler {
 	    addIntent
 	            .setAction("com.android.launcher.action.INSTALL_SHORTCUT");
 	    
+	    addIntent.putExtra("shortcut_path", f.getAbsolutePath());
+	    
 		ctx.sendBroadcast(addIntent);
 		
 		displayOperationMessage("Shortcut created successfully.");
@@ -471,7 +545,7 @@ public class OperationsHandler {
 		displayOperationMessage(fh.insertFavorite(f));
 	}
 	
-	public void hideFile(File f)
+	public void hide(File f)
 	{
 		HiddenFileHandler hfh = new HiddenFileHandler(ctx);
 		
@@ -603,5 +677,19 @@ public class OperationsHandler {
 		
 		d.show(ac.getSupportFragmentManager(), null);
 	}
+	
+	
+	private boolean copy_cut_multiple_files_active = false;
+
+	public boolean isCopy_cut_multiple_files_active() {
+		return copy_cut_multiple_files_active;
+	}
+	public void setCopy_cut_multiple_files_active(
+			boolean copy_cut_multiple_files_active) {
+		this.copy_cut_multiple_files_active = copy_cut_multiple_files_active;
+	}
+
+	
+	
 	
 }
