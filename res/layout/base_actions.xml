@@ -203,6 +203,7 @@
                 android:layout_alignLeft="@+id/favoritesButton"
                 android:background="@android:color/darker_gray" />
             
+            <!-- 
             <Button
                 android:id="@+id/button5"
                 style="?android:attr/buttonStyleSmall"
@@ -213,15 +214,14 @@
                 android:text="Next" />  
 				
             
-            	<!-- android:background="@android:color/transparent" -->
-
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_alignLeft="@+id/favoritesButton"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray" />  
             
-            
+           -->
+           
            <Button
                 android:id="@+id/button6"
                 style="?android:attr/buttonStyleSmall"
@@ -239,6 +239,7 @@
                 android:background="@android:color/darker_gray" />
             
             
+            <!--
            <Button
                 android:id="@+id/button7"
                 style="?android:attr/buttonStyleSmall"
@@ -248,14 +249,12 @@
                 android:drawableTop="@drawable/base_sort_icon"
                 android:text="Sort" />
 				
-            
-            	<!-- android:background="@android:color/transparent" -->
-
+           
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_alignLeft="@+id/favoritesButton"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray" /> 
             
             
            <Button
@@ -267,14 +266,11 @@
                 android:drawableTop="@drawable/base_connect"
                 android:text="Connect" />
 				
-            
-            	<!-- android:background="@android:color/transparent" -->
-
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_alignLeft="@+id/favoritesButton"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray" />  -->
             	
         </LinearLayout>
     </HorizontalScrollView>
@@ -282,7 +278,7 @@
 	<View
 	    android:layout_width="fill_parent"
 	    android:layout_height="1dp"
-	    android:layout_alignRight="@+id/horizontalScrollView1"
+	    android:layout_alignParentRight="true"
 	    android:layout_below="@+id/horizontalScrollView1"
 	    android:background="@android:color/darker_gray" />
 

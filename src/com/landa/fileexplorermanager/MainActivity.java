@@ -181,8 +181,7 @@ public class MainActivity extends FragmentActivity  {
 	
 	//button "Paste" inside OperationsDialog
 	public void pasteFile(View view)
-	{		
-		
+	{
 		oph.paste(OperationsHandler.getClipboard_files().get(0));
 	
 	}

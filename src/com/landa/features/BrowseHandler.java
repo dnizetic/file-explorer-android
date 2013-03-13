@@ -56,6 +56,9 @@ public class BrowseHandler {
 		ac.setContentView(R.layout.main_view);
 		
 		current_path = getInitialPath();
+		
+		//screen rotation leaves a fragment behind
+		clearBackStack();
 	}
 	
 	private File getHomeDirectory()

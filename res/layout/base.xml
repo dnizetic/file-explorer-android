@@ -3,7 +3,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
-    <Button
+	<ImageView
+	    android:id="@+id/button1"
+	    android:layout_width="30dp"
+	    android:layout_height="30dp"
+	    android:layout_above="@+id/include2"
+	    android:layout_alignParentRight="true"
+	    android:layout_below="@+id/view1"
+	    android:src="@drawable/history"
+	    android:onClick="showHistory" />
+
+    <!-- <Button
         android:id="@+id/button1"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="58dp"
@@ -13,29 +23,41 @@
         android:onClick="showHistory"
         android:text="History"
         android:textSize="10sp" />
+         -->
 
-    <!-- ex width: 198 -->
+
     <TextView
         android:id="@+id/shown_path"
-        android:layout_width="wrap_content" 
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/button1"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/button1"
         android:layout_toRightOf="@+id/actions"
         android:drawable="@drawable/gradient_bg"
-        android:gravity="center_vertical"
-        
-        android:singleLine="true" 
         android:ellipsize="marquee"
-        android:marqueeRepeatLimit ="marquee_forever"
         android:focusable="true"
-        android:focusableInTouchMode="true" 
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
-        
+        android:singleLine="true"
         android:text="/etc" />
 
-    <Button
+	<TextView
+	    android:id="@+id/actions"
+	    android:layout_width="30dp"
+	    android:layout_height="30dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:gravity="center"
+	    android:onClick="showHideActionsButton"
+	    android:clickable="true"
+	    android:text="▼"
+	    android:textSize="25sp" />
+	
+    <!-- <Button
         android:id="@+id/actions"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="58dp"
@@ -43,8 +65,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:onClick="showHideActionsButton"
-        android:text="&#9660;Actions"
-        android:textSize="8sp" />
+        android:text="&#9660;" />  -->
+        <!-- android:textSize="8sp" /> -->
     
 	<View
 	    android:layout_width="fill_parent"
@@ -58,7 +80,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/actions"
         layout="@layout/base_actions" />
-    
 
+    <View
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/actions"
+        android:background="@android:color/darker_gray" />
 
 </RelativeLayout>
