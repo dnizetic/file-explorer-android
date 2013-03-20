@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:background="@android:color/white" >
 
     <ImageView
         android:id="@+id/operations_file_image"
@@ -10,7 +11,7 @@
         android:layout_height="26dp"
         android:layout_marginLeft="3dp"
         android:layout_marginTop="3dp"
-        android:src="@drawable/select" />
+        android:src="@drawable/base_select" />
 
     <TextView
         android:id="@+id/operations_file_name"

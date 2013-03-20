@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_view_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -22,6 +23,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/include1" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:orientation="vertical" >
+        </LinearLayout>
+
     </FrameLayout>
     
  
@@ -47,5 +55,14 @@
         android:visibility="gone"
         android:onClick="showClipboard"
         android:text="..." />
+
+	<LinearLayout
+	    android:id="@+id/adLayout"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true" >
+	</LinearLayout>
 
 </RelativeLayout>

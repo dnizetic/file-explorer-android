@@ -11,8 +11,11 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,25 +58,29 @@ public class OperationsDialogFragment extends DialogFragment {
 			this.f = new File(file_absolute_path);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
+		View v;
+		
 		ArrayList<String> operationsList;
 		if (operation_type.equals("single_file")) {
-			setSingleFileDialogTitle(builder);
+			v = getSingleFileDialogTitle();
 			operationsList = getSingleFileOperationsList();
 		} else if (operation_type.equals("multiple_files")) {
-			setDefaultDialogTitle(builder);
+			v = getDefaultDialogTitle();
 			operationsList = getMultipleFilesOperationsList();
 		} else {
-			setDefaultDialogTitle(builder);
+			v = getDefaultDialogTitle();
 			operationsList = getDefaultOperationsList();
 		}
 
 		OperationsAdapter adap = new OperationsAdapter(getActivity(),
 				operationsList);
 
+		ListView lv = (ListView) v.findViewById(R.id.op_list_view);
+		
+		lv.setAdapter(adap);
 		
 		// upon operation click, execute operation
-		builder.setAdapter(adap, new DialogInterface.OnClickListener() {
+		/*builder.setAdapter(adap, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				
 				//String op_name = getOperationName(((AlertDialog) dialog)
@@ -90,16 +97,29 @@ public class OperationsDialogFragment extends DialogFragment {
 					executeDefaultFilesOperation(whichButton);
 				}
 			}
-		});
-		return builder.create();
+		});*/
+		
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				if (operation_type.equals("single_file")) {
+					executeSingleFileOperationTemp(position);
+				} else if(operation_type.equals("multiple_files")) {
+					executeMultipleFilesOperation(position);
+				} else {
+					executeDefaultFilesOperation(position);
+				}
+				
+			}
+		}); 
+		
+		AlertDialog dialog = builder.create();
+		
+		dialog.setView(v, 0, 0, 0, 0);
+		
+		return dialog;
 	}
-
-	/* private String getOperationName(View lw) {
-		TextView op = (TextView) lw.findViewById(R.id.operation_name);
-		String op_name = op.getText().toString();
-
-		return op_name;
-	} */
 
 	private void setSingleFileDialogTitle(AlertDialog.Builder builder) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -116,6 +136,22 @@ public class OperationsDialogFragment extends DialogFragment {
 		
 		builder.setCustomTitle(vw);
 	}
+	
+	private View getSingleFileDialogTitle() {
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+
+		View vw = inflater.inflate(R.layout.operations_view, null);
+		// set the file name & corresponding image
+		TextView title = (TextView) vw.findViewById(R.id.operations_file_name);
+		title.setText(" ".concat(f.getName()));
+
+		ImageView img = (ImageView) vw.findViewById(R.id.operations_file_image);
+		
+		//BrowseHandler.executeBindFileTypeToImage(f.getAbsolutePath(), img);
+		img.setImageResource(BrowseHandler.getFileIconResourceId(f.getAbsolutePath()));
+		
+		return vw;
+	}
 
 	private void setDefaultDialogTitle(AlertDialog.Builder builder) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -124,9 +160,18 @@ public class OperationsDialogFragment extends DialogFragment {
 
 		builder.setCustomTitle(vw);
 	}
+	
+	private View getDefaultDialogTitle() {
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+
+		View vw = inflater.inflate(R.layout.operations_view, null);
+
+		return vw;
+	}
+	
 
 	private ArrayList<String> getSingleFileOperationsList() {
-		//order important
+		//order important //why?
 		operationsInfo.add(OP_CUT);
 		operationsInfo.add(OP_COPY);
 		operationsInfo.add(OP_RENAME);
@@ -180,7 +225,7 @@ public class OperationsDialogFragment extends DialogFragment {
 				break;
 		}
 
-		
+		dismiss();
 	}
 	
 	
@@ -227,7 +272,7 @@ public class OperationsDialogFragment extends DialogFragment {
 			case 10: //properties
 				break;
 		}
-			
+		dismiss();
 	}
 
 
@@ -321,7 +366,7 @@ public class OperationsDialogFragment extends DialogFragment {
 				opHandler.setDirectoryAsHome(f);
 				break;
 		}
-			
+		dismiss();
 	}
 
 }

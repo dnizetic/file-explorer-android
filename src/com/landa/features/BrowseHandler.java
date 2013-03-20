@@ -87,6 +87,7 @@ public class BrowseHandler {
 	public void openShortcut(File f)
 	{
 		if(f != null) {
+			clearBackStack();
 			openFile(f);
 		} else {
 			Toast.makeText(ctx, "File not found.", Toast.LENGTH_SHORT).show();
@@ -118,6 +119,10 @@ public class BrowseHandler {
 			
         //get current file/folder being viewed
         if(f.isDirectory()) { 
+        	
+        	OperationsHandler oph = OperationsHandler.getInstance();
+        	if(oph.isSelectActive()) //cancels select when we click a favorites/history item or go up one level
+        		oph.cancelSelect();
         	
         	//render file list of the folder
         	populateContent(f);
@@ -171,10 +176,13 @@ public class BrowseHandler {
 		
 		Bundle bdl = new Bundle(1);
 		bdl.putString("file_absolute_path", f.getAbsolutePath());
+	
 		cf.setArguments(bdl);
 		
 		return cf;
 	}
+
+	
 	
 	public void markSelectedFiles()
 	{
@@ -204,8 +212,6 @@ public class BrowseHandler {
 		
 		current_path = new_path;
 	}
-	
-
 	
 	
 	private void executeOpenWith(File f) {

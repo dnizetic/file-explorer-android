@@ -122,6 +122,12 @@ public class HiddenFileHandler {
 		return (status != null) ? status : false;
 	}
 	
+	public static boolean fileIsHidden(File f)
+	{
+		Boolean status = hiddenFileHashmap.get(f.getAbsolutePath());
+		return (status != null) ? status : false;
+	}
+	
 	
 	public static File[] getAllHiddenFilesAsFiles()
 	{

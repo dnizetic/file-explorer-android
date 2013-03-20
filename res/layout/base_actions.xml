@@ -221,7 +221,7 @@
                 android:background="@android:color/darker_gray" />  
             
            -->
-           
+           <!-- 
            <Button
                 android:id="@+id/button6"
                 style="?android:attr/buttonStyleSmall"
@@ -236,6 +236,23 @@
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_alignLeft="@+id/favoritesButton"
+                android:background="@android:color/darker_gray" /> -->
+                
+           
+           <Button
+                style="?android:attr/buttonStyleSmall"
+                android:id="@+id/refresh_button"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_effect"
+                android:drawableTop="@drawable/base_refresh"
+                android:onClick="refreshButton"
+                android:text="Refresh" />
+           
+           
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
                 android:background="@android:color/darker_gray" />
             
             

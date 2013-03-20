@@ -34,7 +34,6 @@ import com.landa.model.HiddenFile;
 public class ContentFragment extends ListFragment {
 	
 	
-	//instead of files, ContentFragment should have MyFile (with additional info about the file)
 	private File[] files;
 	private MainFileListAdapter contentAdapter;
 	
@@ -43,6 +42,7 @@ public class ContentFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
     	
+		
     	
     	final String pth =  getArguments().getString("file_absolute_path");
     	File f = new File(pth);

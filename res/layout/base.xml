@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout1"
+    android:background="@android:color/white"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
@@ -13,17 +14,6 @@
 	    android:src="@drawable/history"
 	    android:onClick="showHistory" />
 
-    <!-- <Button
-        android:id="@+id/button1"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="58dp"
-        android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:onClick="showHistory"
-        android:text="History"
-        android:textSize="10sp" />
-         -->
 
 
     <TextView
@@ -43,6 +33,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
+        android:textColor="@android:color/black"
         android:text="/etc" />
 
 	<TextView

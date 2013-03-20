@@ -41,7 +41,7 @@ public class DialogFileListAdapter extends BaseAdapter {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View rowView = inflater.inflate(R.layout.history_dialog_list_row,
+		View rowView = inflater.inflate(R.layout.history_dialog_list_row_new,
 				parent, false);
 
 		

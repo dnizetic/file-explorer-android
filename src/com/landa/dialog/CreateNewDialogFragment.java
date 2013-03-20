@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,35 +23,41 @@ public class CreateNewDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View vw = inflater.inflate(R.layout.create_new_title_view, null);
-        builder.setCustomTitle(vw);
-
+        
+        View v = inflater.inflate(R.layout.create_new_view, null);
+        
+		ListView lv = (ListView) v.findViewById(R.id.list);
+		
         String[] values = new String[] { "File", "Folder" };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
           android.R.layout.simple_list_item_1, values);
+		
+		lv.setAdapter(adapter);
         
-        
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-            	ListView lv = ((AlertDialog) dialog).getListView();
-            	String str = (String) lv.getItemAtPosition(whichButton);
-            	
-            	showCreateNewInputDialog(str);
-            }
-        });
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				String str = (String) parent.getItemAtPosition(position);
+				showCreateNewInputDialog(str);
+			}
+		}); 
+		
  
-        return builder.create();
+		AlertDialog dialog = builder.create();
+		
+		dialog.setView(v, 0, 0, 0, 0);
+		
+        return dialog;
     }
 
 	
 	private void showCreateNewInputDialog(final String type) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setCancelable(false)
+		builder.setCancelable(true)
 				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 
@@ -60,6 +68,8 @@ public class CreateNewDialogFragment extends DialogFragment {
 						
 						OperationsHandler oph = OperationsHandler.getInstance();
 						oph.createNew(type, file_name);
+						
+						closeDialog();
 					}
 				})
 				.setNegativeButton("Cancel",
@@ -76,4 +86,9 @@ public class CreateNewDialogFragment extends DialogFragment {
 
 		builder.show();
 	} 
+	
+	private void closeDialog()
+	{
+		dismiss();
+	}
 }

@@ -15,5 +15,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/FileExplorerManager/ormlite/ormlite-core-4.42-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="admob/GoogleAdMobAdsSdk-6.3.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
