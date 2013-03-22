@@ -116,6 +116,7 @@ public class BrowseHandler {
 			clearBackStack();
 			clear_back_stack_before_rendering = false;
 		}
+
 			
         //get current file/folder being viewed
         if(f.isDirectory()) { 
@@ -123,6 +124,11 @@ public class BrowseHandler {
         	OperationsHandler oph = OperationsHandler.getInstance();
         	if(oph.isSelectActive()) //cancels select when we click a favorites/history item or go up one level
         		oph.cancelSelect();
+        	
+
+    		if(search_displayed == true) {
+    			search_displayed = false;
+    		}
         	
         	//render file list of the folder
         	populateContent(f);
@@ -151,6 +157,8 @@ public class BrowseHandler {
 		for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {    
 		    fm.popBackStack();
 		}
+		
+		
 	}
 	
 	
@@ -328,7 +336,7 @@ public class BrowseHandler {
 	} 
 	
 	
-	
+	public static boolean search_displayed = false;
 	public void popLastFragment()
 	{
 		FragmentManager fm = ac.getSupportFragmentManager();
@@ -338,7 +346,10 @@ public class BrowseHandler {
         
 	    fm.popBackStack();
 		
-		updateShownPath(new File(sPath).getParent());
+	    if(search_displayed) {
+	    	search_displayed = false;
+	    } else
+	    	updateShownPath(new File(sPath).getParent());
 	}
 	
 	public void goUpOneLevel()

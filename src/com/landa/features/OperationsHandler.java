@@ -139,7 +139,7 @@ public class OperationsHandler {
 	}
 	
 	
-	public void addToClipboard(File f, boolean status)
+	public void addUniqueToClipboard(File f, boolean status)
 	{
 		int index;
 		if((index = existsInClipboard(f)) != -1) {
@@ -158,25 +158,29 @@ public class OperationsHandler {
 	public void setCopied_cut_file(PasteFile copied_cut_file) {
 		this.copied_cut_file = copied_cut_file;
 	}
+	
 	public void cut(File f) 
 	{
+		setCopy_cut_multiple_files_active(false);
+		
 		setCopied_cut_file(new PasteFile(f, PasteFile.STATUS_CUT));
 		
-		showOperationsPickButton();
+		//showOperationsPickButton();
 		setPasteOperationsVisibility(View.VISIBLE);
 		
-		addToClipboard(f, PasteFile.STATUS_CUT);
+		addUniqueToClipboard(f, PasteFile.STATUS_CUT);
 	}
 	
-
 	public void copy(File f) 
 	{
+		setCopy_cut_multiple_files_active(false);
+		
 		setCopied_cut_file(new PasteFile(f, PasteFile.STATUS_COPY));
 		
-		showOperationsPickButton();
+		//showOperationsPickButton();
 		setPasteOperationsVisibility(View.VISIBLE);
 		
-		addToClipboard(f, PasteFile.STATUS_COPY);
+		addUniqueToClipboard(f, PasteFile.STATUS_COPY);
 	}
 	
 
@@ -408,6 +412,8 @@ public class OperationsHandler {
 	
 	
 	//operation: cut or copy
+	//copySelected
+	//cutSelected
 	public void copyCutSelectedFiles(boolean operation)
 	{
 		if(selected_files.size() == 0) {
@@ -416,16 +422,17 @@ public class OperationsHandler {
 			return;
 		}
 
+		setPasteOperationsVisibility(View.VISIBLE);
 		
 		multiple_op_files.clear();
 		
 		for(int i = 0; i < selected_files.size(); ++i) {
-			addToClipboard(selected_files.get(i), operation);
+			addUniqueToClipboard(selected_files.get(i), operation);
 			
 			multiple_op_files.add(
 					new PasteFile(selected_files.get(i), operation));
 		}
-			
+		
 		cancelSelect();
 		
 		setCopy_cut_multiple_files_active(true);
@@ -481,6 +488,9 @@ public class OperationsHandler {
 		for(int i = 0; i < selected_files.size(); ++i)
 			hide(selected_files.get(i));
 		
+
+		displayOperationMessage("Files hidden");
+		
 		cancelSelect();
 		
 		BrowseHandler bh = BrowseHandler.getInstance();
@@ -502,7 +512,6 @@ public class OperationsHandler {
 			if(!fileAlreadySelected(f))
 				selectFile(f);
 		}
-		
 		
 		
 		BrowseHandler bh = BrowseHandler.getInstance();
@@ -558,7 +567,6 @@ public class OperationsHandler {
 		BrowseHandler bh = BrowseHandler.getInstance();
 		bh.refreshContent();
 		
-		displayOperationMessage("File hidden");
 	}
 	
 	public void showCreateNewDialog()

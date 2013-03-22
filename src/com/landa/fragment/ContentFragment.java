@@ -168,7 +168,9 @@ public class ContentFragment extends ListFragment {
 		list.setOnItemLongClickListener(new OnItemLongClickListener() {
 	        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 	        
-	        	openOperationsDialog(view);
+	    		if(!OperationsHandler.getInstance().isSelectActive())
+	    			openOperationsDialog(view);
+	        	
 	            return false;
 	        }
 	    });

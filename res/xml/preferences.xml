@@ -19,10 +19,10 @@
 	    android:summary="Show files whose name starts with a '.'"
 	    android:defaultValue="true"/>
 	
-	<CheckBoxPreference
+	<!-- <CheckBoxPreference
 	    android:key="show_image_thumbnails"
 	    android:title="Show image thumbnails"
 	    android:summary="Show image thumbnails"
-	    android:defaultValue="true"/>
+	    android:defaultValue="true"/>  -->
     
 </PreferenceScreen>

@@ -72,6 +72,8 @@ public class MainActivity extends FragmentActivity {
 		ll.addView(adView);
 		
 		adView.loadAd(adRequest);
+		
+		//reduce FrameLayout height
 		//adView.loadAd(new AdRequest());
 	}
 
@@ -123,7 +125,7 @@ public class MainActivity extends FragmentActivity {
 					showBackAgainMessage();
 			}
 
-		} else if (fm.getBackStackEntryCount() > 1) {
+		} else if (fm.getBackStackEntryCount() > 1) { //Search results: always here
 
 			browseHandler.popLastFragment();
 
@@ -292,6 +294,8 @@ public class MainActivity extends FragmentActivity {
 	public void upButton(View vw) {
 		if (BrowseHandler.current_path.equals("/")) {
 			onBackPressed();
+		} else if(BrowseHandler.search_displayed) {
+			browseHandler.popLastFragment();
 		} else
 			browseHandler.goUpOneLevel();
 	}
@@ -300,13 +304,11 @@ public class MainActivity extends FragmentActivity {
 	public void copyButton(View vw) {
 		oph.copyCutSelectedFiles(PasteFile.STATUS_COPY);
 
-		oph.setPasteOperationsVisibility(View.VISIBLE);
 	}
 
 	public void cutButton(View vw) {
 		oph.copyCutSelectedFiles(PasteFile.STATUS_CUT);
 
-		oph.setPasteOperationsVisibility(View.VISIBLE);
 	}
 
 	public void deleteButton(View vw) {
@@ -369,7 +371,13 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public void refreshButton(View vw) {
+		
+		//after refresh, cancel select
+		if(oph.isSelectActive())
+			oph.cancelSelect();
+		
 		BrowseHandler.getInstance().refreshContent();
+
 	}
 
 	

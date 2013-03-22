@@ -8,7 +8,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -121,21 +120,21 @@ public class OperationsDialogFragment extends DialogFragment {
 		return dialog;
 	}
 
-	private void setSingleFileDialogTitle(AlertDialog.Builder builder) {
-		LayoutInflater inflater = getActivity().getLayoutInflater();
-
-		View vw = inflater.inflate(R.layout.operations_title_view, null);
-		// set the file name & corresponding image
-		TextView title = (TextView) vw.findViewById(R.id.operations_file_name);
-		title.setText(" ".concat(f.getName()));
-
-		ImageView img = (ImageView) vw.findViewById(R.id.operations_file_image);
-		
-		//BrowseHandler.executeBindFileTypeToImage(f.getAbsolutePath(), img);
-		img.setImageResource(BrowseHandler.getFileIconResourceId(f.getAbsolutePath()));
-		
-		builder.setCustomTitle(vw);
-	}
+//	private void setSingleFileDialogTitle(AlertDialog.Builder builder) {
+//		LayoutInflater inflater = getActivity().getLayoutInflater();
+//
+//		View vw = inflater.inflate(R.layout.operations_title_view, null);
+//		// set the file name & corresponding image
+//		TextView title = (TextView) vw.findViewById(R.id.operations_file_name);
+//		title.setText(" ".concat(f.getName()));
+//
+//		ImageView img = (ImageView) vw.findViewById(R.id.operations_file_image);
+//		
+//		//BrowseHandler.executeBindFileTypeToImage(f.getAbsolutePath(), img);
+//		img.setImageResource(BrowseHandler.getFileIconResourceId(f.getAbsolutePath()));
+//		
+//		builder.setCustomTitle(vw);
+//	}
 	
 	private View getSingleFileDialogTitle() {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -153,13 +152,13 @@ public class OperationsDialogFragment extends DialogFragment {
 		return vw;
 	}
 
-	private void setDefaultDialogTitle(AlertDialog.Builder builder) {
-		LayoutInflater inflater = getActivity().getLayoutInflater();
-
-		View vw = inflater.inflate(R.layout.operations_title_view, null);
-
-		builder.setCustomTitle(vw);
-	}
+//	private void setDefaultDialogTitle(AlertDialog.Builder builder) {
+//		LayoutInflater inflater = getActivity().getLayoutInflater();
+//
+//		View vw = inflater.inflate(R.layout.operations_title_view, null);
+//
+//		builder.setCustomTitle(vw);
+//	}
 	
 	private View getDefaultDialogTitle() {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -235,11 +234,11 @@ public class OperationsDialogFragment extends DialogFragment {
 		operationsInfo.add(OP_COPY);
 		operationsInfo.add(OP_DELETE);
 		operationsInfo.add(OP_SELECT_ALL);
-		operationsInfo.add(OP_SELECT_INVERSE);
-		operationsInfo.add(OP_FAVORITE);
+		//operationsInfo.add(OP_SELECT_INVERSE);
+		//operationsInfo.add(OP_FAVORITE);
 		operationsInfo.add(OP_HIDE);
-		operationsInfo.add(OP_COMPRESS);
-		operationsInfo.add(OP_PROPERTIES);
+		//operationsInfo.add(OP_COMPRESS);
+		//operationsInfo.add(OP_PROPERTIES);
 
 		return operationsInfo;
 	}
@@ -256,20 +255,13 @@ public class OperationsDialogFragment extends DialogFragment {
 				opHandler.copyCutSelectedFiles(PasteFile.STATUS_COPY);
 				break;
 			case 3: //delete
-				//showDeleteConfirmationDialog();
+				opHandler.deleteSelectedFiles();
 				break;
-			case 5: //select all
+			case 4: //select all
 				opHandler.selectAll();
 				break;
-			case 6: //select inverse
-				break;
-			case 7: //favorite
-				break;
-			case 8: //hide file
-				break;
-			case 9: //compress file
-				break;
-			case 10: //properties
+			case 5: //hide
+				opHandler.hideSelectedFiles();
 				break;
 		}
 		dismiss();

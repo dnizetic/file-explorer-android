@@ -16,7 +16,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1.90"
         android:padding="2dip"
@@ -34,7 +34,7 @@
         <TextView
             android:id="@+id/full_path"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Absolute path" />
     </LinearLayout>
 

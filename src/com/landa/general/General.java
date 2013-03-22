@@ -53,11 +53,23 @@ public class General {
 		in.close();
 		out.close();
 	}
-
+	
+	private static boolean parentCheck(File maybeChild, File possibleParent)
+    {
+		File parent = maybeChild.getParentFile();
+		while ( parent != null ) {
+		  if ( parent.equals( possibleParent ))
+		    return true;
+		  parent = parent.getParentFile();
+		}
+		return false;
+    }
+	
 	public static void copyDirectory(File sourceLocation, File targetLocation)
 			throws IOException {
 
-		if(targetLocation.getAbsolutePath().contains(sourceLocation.getAbsolutePath()))
+		//if target is child of source
+		if(parentCheck(targetLocation, sourceLocation))
 			throw new IOException("Invalid path (cannot paste a folder into itself)");
 		
 		if (sourceLocation.isDirectory()) {
@@ -104,6 +116,16 @@ public class General {
 
 			return fName1.compareTo(fName2);
 			//descending: full_path2.compareTo(full_path1);
+		}
+	};
+	
+	public static Comparator<String> stringSorter = new Comparator<String>() {
+		public int compare(String f1, String f2) {
+
+			String fName1 = f1.toUpperCase();
+			String fName2 = f2.toUpperCase();
+
+			return fName1.compareTo(fName2);
 		}
 	};
 	
