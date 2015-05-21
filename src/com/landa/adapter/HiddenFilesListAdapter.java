@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 import com.landa.features.BrowseHandler;
 
 //used by FavoritesDialogFragment, HistoryDialogFragment

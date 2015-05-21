@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 import com.landa.adapter.OperationsAdapter;
 import com.landa.datatypes.PasteFile;
 import com.landa.features.BrowseHandler;

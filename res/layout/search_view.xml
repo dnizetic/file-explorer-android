@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:scrollbars="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true"> >
+
+	<LinearLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+	    
+	    <ImageView
+	        android:layout_width="26dp"
+	        android:layout_height="26dp"
+	        android:layout_gravity="center"
+	        android:src="@drawable/base_search" />
+		
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	       	android:layout_gravity="center"
+	        android:text=" Search file"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	</LinearLayout>
+	
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="@android:color/darker_gray" />
+
+
+	    
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+    
+	    <TextView
+	        android:layout_width="80dp"
+	        android:layout_height="wrap_content"
+	        android:padding="3dip"
+	        android:gravity="right"
+	        android:text=" File name: " />
+
+	    <EditText
+   	        android:id="@+id/file_name"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"  />
+    
+    </LinearLayout>
+    
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+
+		<TextView
+		    android:layout_width="80dp"
+		    android:layout_height="wrap_content"
+		    android:gravity="right"
+		    android:padding="3dip"
+		    android:text=" Search in: " />
+
+		<Spinner
+		    android:id="@+id/search_in_spinner"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:prompt="@string/search_search_in" />
+    
+    </LinearLayout>
+	    
+	
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="@android:color/darker_gray" />
+
+	<Button
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="Advanced search &#9660;"
+	    android:onClick="showAdvancedSearchButton" />
+	
+	
+	<LinearLayout
+	    android:id="@+id/advanced_search"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" 
+	    android:visibility="gone" >
+
+
+		
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+    
+	    <TextView
+	        
+	        android:layout_width="118dp"
+	        android:layout_height="wrap_content"
+	        android:padding="3dip"
+	        android:gravity="right"
+	        android:text=" File size: " />
+
+	    <Spinner
+	        android:id="@+id/file_size_spinner"
+	        android:entries="@array/file_size_array"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	         />
+    
+    </LinearLayout>
+    
+	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+    
+	    <TextView
+	        
+	        android:layout_width="118dp"
+	        android:layout_height="wrap_content"
+	        android:padding="3dip"
+	        android:gravity="right"
+	        android:text=" File type: " />
+
+	    <Spinner
+	        android:id="@+id/file_type_spinner"
+	        android:entries="@array/file_type_array"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"/>
+    
+    </LinearLayout>
+    
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="@android:color/darker_gray" />
+	    
+	
+<!-- 	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+    
+	    <TextView
+	        android:layout_width="118dp"
+	        android:layout_height="wrap_content"
+	        android:gravity="right"
+	        android:padding="3dip"
+	        android:textSize="12sp"
+	        android:text=" Search subfolders:" />
+
+	    <CheckBox
+	        android:id="@+id/checkBox1"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:checked="true"
+	        android:text="" />
+    
+    </LinearLayout>
+    
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="@android:color/darker_gray" /> -->
+	
+	
+	
+	
+	</LinearLayout> 
+	
+	<!-- 
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+    
+	    <TextView
+	        
+	        android:layout_width="118dp"
+	        android:layout_height="wrap_content"
+	        android:padding="3dip"
+	        android:gravity="right"
+	        android:text=" Readable: " />
+
+	    <TextView
+	        android:id="@+id/file_readable"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="left"
+	        android:padding="3dip"
+	        android:text=" Yes" />
+    
+    </LinearLayout>
+    
+	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+    
+	    <TextView
+	        android:layout_width="118dp"
+	        android:layout_height="wrap_content"
+	        android:padding="3dip"
+	        android:gravity="right"
+	        android:text=" Writeable: " />
+
+	    <TextView
+	        android:id="@+id/file_writable"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="left"
+	        android:padding="3dip"
+	        android:text=" Yes" />
+    
+    </LinearLayout>
+    
+	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+    
+	    <TextView
+	        android:layout_width="118dp"
+	        android:layout_height="wrap_content"
+	        android:padding="3dip"
+	        android:gravity="right"
+	        android:text=" Hidden: " />
+
+	    <TextView
+	        android:id="@+id/file_hidden"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="left"
+	        android:padding="3dip"
+	        android:text=" No" />
+    
+    </LinearLayout>
+	
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="@android:color/darker_gray" />
+	
+	-->
+</LinearLayout>
+</ScrollView>

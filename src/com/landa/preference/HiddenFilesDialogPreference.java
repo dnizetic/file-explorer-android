@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 import com.landa.adapter.HiddenFilesListAdapter;
 import com.landa.features.HiddenFileHandler;
 

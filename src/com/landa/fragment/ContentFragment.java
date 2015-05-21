@@ -17,10 +17,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 import com.landa.adapter.MainFileListAdapter;
 import com.landa.database.DatabaseManager;
 import com.landa.datatypes.SelectedFile;
@@ -84,6 +85,8 @@ public class ContentFragment extends ListFragment {
 			showEmptyFolderMessage();
 		}
     	
+		//view.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT - 100));
+		
         return view;
     }
     
@@ -174,7 +177,8 @@ public class ContentFragment extends ListFragment {
 	            return false;
 	        }
 	    });
-        
+		
+		//view.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT - 100));
     }
 
     

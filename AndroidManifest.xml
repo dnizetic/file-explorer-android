@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fileexplorermanager"
+    package="com.landa.fileexplorermanager"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -43,12 +43,12 @@
             android:name="com.google.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
 
-        <receiver android:name="com.example.fileexplorermanager.SdCardStateReceiver" >
+        <!-- <receiver android:name="com.example.fileexplorermanager.SdCardStateReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_REMOVED" />
                 <action android:name="android.intent.action.MEDIA_MOUNTED" />
             </intent-filter>
-        </receiver>
+        </receiver>  -->
     </application>
 
 </manifest>

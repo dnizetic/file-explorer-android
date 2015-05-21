@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 import com.landa.adapter.ClipboardFileListAdapter;
 import com.landa.features.OperationsHandler;
 

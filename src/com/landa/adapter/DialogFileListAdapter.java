@@ -14,7 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 import com.landa.dialog.HistoryFavoritesDialogFragment;
 import com.landa.features.BrowseHandler;
 import com.landa.features.FavoritesHandler;

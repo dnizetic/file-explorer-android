@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 import com.landa.adapter.HiddenFilesListAdapter;
 import com.landa.features.HiddenFileHandler;
 import com.landa.features.OperationsHandler;

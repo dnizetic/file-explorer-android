@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 
 public class SdCardEmptyFragment extends Fragment {
 

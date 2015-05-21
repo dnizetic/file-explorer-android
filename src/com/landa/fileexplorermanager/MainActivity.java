@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
@@ -66,15 +66,15 @@ public class MainActivity extends FragmentActivity {
 		AdRequest adRequest = new AdRequest();
 		adRequest.addTestDevice(AdRequest.TEST_EMULATOR); // Emulator
 
-		adView = new AdView(this, AdSize.BANNER, "a151410c0882629");
-		
-		LinearLayout ll = (LinearLayout) findViewById(R.id.adLayout);
+		adView = new AdView(this, AdSize.SMART_BANNER, "a151410c0882629");
+	
+		LinearLayout ll = (LinearLayout) findViewById(R.id.main_view_new);
 		ll.addView(adView);
 		
-		adView.loadAd(adRequest);
+		//adView.loadAd(adRequest);
 		
-		//reduce FrameLayout height
-		//adView.loadAd(new AdRequest());
+		//for prod
+		adView.loadAd(new AdRequest());
 	}
 
 	@Override
@@ -94,7 +94,6 @@ public class MainActivity extends FragmentActivity {
 		return false;
 	}
 
-	// ..
 	private boolean doubleBackToExitPressedOnce = false;
 
 	@Override

@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.R;
 import com.landa.features.OperationsHandler;
 
 public class CreateNewDialogFragment extends DialogFragment {

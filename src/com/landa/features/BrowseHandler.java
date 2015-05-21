@@ -20,8 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fileexplorermanager.BuildConfig;
-import com.example.fileexplorermanager.R;
+import com.landa.fileexplorermanager.BuildConfig;
+import com.landa.fileexplorermanager.R;
 import com.landa.adapter.MainFileListAdapter;
 import com.landa.fragment.ContentFragment;
 import com.landa.fragment.SdCardEmptyFragment;
@@ -53,7 +53,8 @@ public class BrowseHandler {
 		this.ctx = ctx;
 		this.ac = ac;
 		
-		ac.setContentView(R.layout.main_view);
+		//ac.setContentView(R.layout.main_view);
+		ac.setContentView(R.layout.main_view_new);
 		
 		current_path = getInitialPath();
 		
@@ -139,6 +140,8 @@ public class BrowseHandler {
         }
         
         executeSaveHistory(f);
+        
+        
 	}
 	
 	private boolean fileIsSdCardRoot(File f)
@@ -157,7 +160,6 @@ public class BrowseHandler {
 		for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {    
 		    fm.popBackStack();
 		}
-		
 		
 	}
 	
